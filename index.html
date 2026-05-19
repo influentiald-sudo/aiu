@@ -202,7 +202,22 @@ a:hover { text-decoration: underline; }
   grid-template-columns: 220px 1fr;
   gap: 2rem;
 }
-@media (max-width: 900px) { .content-layout { grid-template-columns: 1fr; } }
+@media (max-width: 900px) {
+  .content-layout { grid-template-columns: 1fr; }
+  .sidebar {
+    position: static;
+    top: auto;
+    max-height: none;
+    overflow-y: visible;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .sidebar h4 { padding-left: 4px; }
+}
 
 /* --- SIDEBAR --- */
 .sidebar {
