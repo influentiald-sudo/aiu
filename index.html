@@ -33,7 +33,7 @@ a:hover { text-decoration: underline; }
 
 /* --- HEADER --- */
 .site-header {
-  background: var(--dark);
+  background: var(--orange);
   padding: 0 2rem;
   height: 56px;
   display: flex;
@@ -49,13 +49,13 @@ a:hover { text-decoration: underline; }
   gap: 10px;
   flex-shrink: 0;
 }
-.site-header .logo img { height: 40px; display: block; }
+.site-header .logo img { height: 40px; display: block; filter: brightness(0) invert(1); }
 .site-header .logo a { display: flex; align-items: center; }
 .header-nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
 .nav-pill {
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.12);
-  color: rgba(255,255,255,0.65);
+  border: 1px solid rgba(255,255,255,0.45);
+  color: var(--white);
   padding: 5px 13px;
   border-radius: 100px;
   font-size: 0.78rem;
@@ -65,21 +65,21 @@ a:hover { text-decoration: underline; }
   white-space: nowrap;
   letter-spacing: 0.01em;
 }
-.nav-pill:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
-.nav-pill.active { background: var(--orange); border-color: var(--orange); color: var(--white); }
-.nav-pill.accent { border-color: var(--orange); color: var(--orange); }
-.nav-pill.accent:hover { background: var(--orange); color: var(--white); }
+.nav-pill:hover { background: rgba(255,255,255,0.18); color: var(--white); border-color: var(--white); }
+.nav-pill.active { background: var(--white); border-color: var(--white); color: var(--orange); }
+.nav-pill.accent { border-color: rgba(255,255,255,0.45); color: var(--white); }
+.nav-pill.accent:hover { background: rgba(255,255,255,0.18); color: var(--white); border-color: var(--white); }
 .nav-pill.cta {
-  background: #E8833A;
-  border-color: #E8833A;
-  color: var(--white);
-  font-weight: 600;
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--orange);
+  font-weight: 700;
   animation: pulse-glow 1.8s ease-in-out infinite;
 }
-.nav-pill.cta:hover { background: #d4721f; border-color: #d4721f; }
+.nav-pill.cta:hover { background: #fff7f2; border-color: var(--white); color: var(--orange); }
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(232,131,58,0.6); }
-  50% { box-shadow: 0 0 20px 8px rgba(232,131,58,0.55); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.6); }
+  50% { box-shadow: 0 0 20px 8px rgba(255,255,255,0.45); }
 }
 .nav-pill svg { width: 14px; height: 14px; vertical-align: -2px; margin-right: 3px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
@@ -87,7 +87,7 @@ a:hover { text-decoration: underline; }
 .hamburger {
   display: none;
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.45);
   color: var(--white);
   width: 40px;
   height: 36px;
@@ -97,7 +97,7 @@ a:hover { text-decoration: underline; }
   justify-content: center;
   transition: background 0.2s;
 }
-.hamburger:hover { background: rgba(255,255,255,0.08); }
+.hamburger:hover { background: rgba(255,255,255,0.18); border-color: var(--white); }
 .hamburger svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 @media (max-width: 900px) {
@@ -108,13 +108,13 @@ a:hover { text-decoration: underline; }
     top: 56px;
     left: 0;
     right: 0;
-    background: var(--dark);
+    background: var(--orange);
     padding: 1rem;
     flex-direction: column;
     align-items: stretch;
     gap: 6px;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    border-top: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
     max-height: calc(100vh - 56px);
     overflow-y: auto;
     z-index: 99;
