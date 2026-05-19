@@ -1,1417 +1,1385 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AI University — Learn the Language Machines Actually Understand</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI University | How to Talk to Your AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --red: #e63946;
-    --red-dark: #c92f3c;
-    --dark: #222222;
-    --gray: #666666;
-    --light-bg: #f9f9f9;
-    --white: #ffffff;
-    --footer-dark: #1a1a2e;
-    --footer-darker: #111111;
-    --border: #e5e5e5;
-    --link-gray: #aaaaaa;
-    --shadow: 0 2px 15px rgba(0,0,0,0.08);
-    --shadow-lg: 0 6px 30px rgba(0,0,0,0.12);
-  }
+:root {
+  --dark: #141413;
+  --light: #faf9f5;
+  --mid: #b0aea5;
+  --subtle: #e8e6dc;
+  --orange: #d97757;
+  --blue: #6a9bcc;
+  --green: #788c5d;
+  --white: #ffffff;
+  --bg: #faf9f5;
+  --card: #ffffff;
+  --border: #e8e6dc;
+  --shadow: 0 1px 3px rgba(20,20,19,0.06);
+  --shadow-lg: 0 8px 24px rgba(20,20,19,0.08);
+  --radius: 8px;
+  --radius-lg: 14px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Lora', Georgia, serif; color: var(--dark); background: var(--bg); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6,.site-header,.chooser-card h3,.accordion-trigger,.btn-generate,.btn-tokenize,.btn-restore,.back-btn,.edition-badge,.sidebar h4,.sidebar a,
+.data-table th,.gen-row label,.generator label,.generator select,.badge,.nav-pill,.footer-brand,
+.section-sub { font-family: 'Poppins', Arial, sans-serif; }
+a { color: var(--orange); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Open Sans', sans-serif;
-    color: var(--gray);
-    line-height: 1.6;
-    background: var(--white);
-    -webkit-font-smoothing: antialiased;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Poppins', sans-serif;
-    color: var(--dark);
-    font-weight: 700;
-    line-height: 1.2;
-  }
-  a { text-decoration: none; color: inherit; transition: color 0.3s ease; }
-  img { max-width: 100%; display: block; object-fit: cover; }
-  ul { list-style: none; }
-  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+/* --- HEADER --- */
+.site-header {
+  background: var(--dark);
+  padding: 0 2rem;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.site-header .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.site-header .logo img { height: 36px; filter: brightness(0) invert(1); }
+.site-header .logo a { display: flex; align-items: center; }
+.header-nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.nav-pill {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.65);
+  padding: 5px 13px;
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+.nav-pill:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
+.nav-pill.active { background: var(--orange); border-color: var(--orange); color: var(--white); }
+.nav-pill.accent { border-color: var(--orange); color: var(--orange); }
+.nav-pill.accent:hover { background: var(--orange); color: var(--white); }
+.nav-pill.cta {
+  background: #E8833A;
+  border-color: #E8833A;
+  color: var(--white);
+  font-weight: 600;
+  animation: pulse-glow 1.8s ease-in-out infinite;
+}
+.nav-pill.cta:hover { background: #d4721f; border-color: #d4721f; }
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232,131,58,0.6); }
+  50% { box-shadow: 0 0 20px 8px rgba(232,131,58,0.55); }
+}
+.nav-pill svg { width: 14px; height: 14px; vertical-align: -2px; margin-right: 3px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+/* --- HERO --- */
+.hero {
+  background: var(--dark);
+  color: var(--light);
+  padding: 5rem 2rem 4.5rem;
+  text-align: center;
+}
+.hero .badge {
+  display: inline-block;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 5px 16px;
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--mid);
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.02em;
+}
+.hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.03em; line-height: 1.15; }
+.hero h1 span { color: var(--orange); }
+.hero p { font-size: 1.05rem; color: var(--mid); max-width: 560px; margin: 0 auto 2rem; line-height: 1.7; }
 
-  .btn {
-    display: inline-block;
-    background: var(--red);
-    color: var(--white);
-    padding: 14px 28px;
-    border-radius: 4px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 13px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border: 2px solid var(--red);
-  }
-  .btn:hover { background: var(--red-dark); border-color: var(--red-dark); color: var(--white); }
-  .btn-outline {
-    background: transparent;
-    color: var(--red);
-  }
-  .btn-outline:hover { background: var(--red); color: var(--white); }
-  .btn-sm { padding: 11px 20px; font-size: 12px; }
+/* --- AUDIENCE CHOOSER --- */
+.chooser {
+  max-width: 880px;
+  margin: -2.5rem auto 3rem;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 768px) { .chooser { grid-template-columns: 1fr; margin-top: -1.5rem; } }
+.chooser-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: var(--shadow);
+}
+.chooser-card:hover {
+  border-color: var(--orange);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+.chooser-card.selected {
+  border-color: var(--orange);
+  background: #fdf8f5;
+}
+.chooser-card .card-icon { margin-bottom: 1rem; }
+.chooser-card .card-icon svg { width: 36px; height: 36px; stroke: var(--orange); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.chooser-card h3 { color: var(--dark); font-size: 1.05rem; margin-bottom: 0.4rem; font-weight: 600; }
+.chooser-card p { color: var(--mid); font-size: 0.88rem; line-height: 1.6; }
 
-  .red-link {
-    color: var(--red);
-    font-weight: 700;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .red-link:hover { color: var(--red-dark); }
-  .red-link i { font-size: 12px; }
+/* --- MAIN CONTENT --- */
+.main-container {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+  display: none;
+}
+.main-container.visible { display: block; }
+.content-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+}
+@media (max-width: 900px) { .content-layout { grid-template-columns: 1fr; } }
 
-  .small-label {
-    color: var(--red);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-size: 13px;
-    margin-bottom: 8px;
-    display: inline-block;
-  }
+/* --- SIDEBAR --- */
+.sidebar {
+  position: sticky;
+  top: 72px;
+  align-self: start;
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+}
+.sidebar h4 {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--mid);
+  margin-bottom: 0.75rem;
+  padding-left: 12px;
+  font-weight: 600;
+}
+.sidebar a {
+  display: block;
+  padding: 7px 12px;
+  color: var(--dark);
+  font-size: 0.84rem;
+  font-weight: 400;
+  border-radius: 6px;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+  margin-bottom: 1px;
+}
+.sidebar a:hover { background: rgba(217,119,87,0.06); text-decoration: none; color: var(--orange); }
+.sidebar a.active { background: rgba(217,119,87,0.08); color: var(--orange); border-left-color: var(--orange); font-weight: 600; }
 
-  /* ====== TOP UTILITY BAR ====== */
-  .top-bar {
-    background: var(--dark);
-    color: var(--white);
-    font-size: 13px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-  }
-  .top-bar .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-  .top-bar-left, .top-bar-center, .top-bar-right {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-  }
-  .top-bar-left a {
-    color: var(--white);
-    font-size: 13px;
-    opacity: 0.85;
-  }
-  .top-bar-left a:hover { color: var(--red); opacity: 1; }
-  .top-bar-center span {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .top-bar-center .divider { opacity: 0.4; }
-  .top-bar-center i, .top-bar-right i { color: var(--red); }
-  .top-bar-right { cursor: pointer; }
+/* --- SECTIONS --- */
+.content-area { min-width: 0; }
+.section {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.section h2 { font-size: 1.4rem; color: var(--dark); margin-bottom: 0.2rem; letter-spacing: -0.02em; font-weight: 700; }
+.section .section-sub { font-size: 0.88rem; color: var(--mid); margin-bottom: 1rem; font-weight: 500; }
+.section h3 { font-size: 1.08rem; color: var(--dark); margin: 1.5rem 0 0.5rem; font-weight: 600; }
+.section h4 { font-size: 0.95rem; color: var(--orange); margin: 1rem 0 0.4rem; font-weight: 600; }
+.section p { color: var(--dark); margin-bottom: 0.75rem; font-size: 0.95rem; }
+.section ul, .section ol { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+.section li { margin-bottom: 0.35rem; color: var(--dark); font-size: 0.95rem; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
 
-  /* ====== NAVIGATION ====== */
-  .navbar {
-    background: var(--white);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-  .navbar .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 80px;
-  }
-  .logo {
-    display: inline-flex;
-    align-items: center;
-  }
-  .logo-icon {
-    height: 48px;
-    width: auto;
-    display: block;
-    flex-shrink: 0;
-  }
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 26px;
-  }
-  .nav-links a {
-    color: var(--dark);
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: color 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .nav-links a:hover, .nav-links a.active { color: var(--red); }
-  .nav-links .has-dropdown::after {
-    content: '\f107';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    font-size: 11px;
-    margin-left: 4px;
-  }
-  .hamburger {
-    display: none;
-    color: var(--dark);
-    font-size: 24px;
-    cursor: pointer;
-  }
+/* --- PROMPT BLOCKS --- */
+.prompt-block {
+  background: var(--light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin: 0.5rem 0 0.75rem;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--dark);
+  position: relative;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.prompt-block:hover { border-color: var(--orange); }
+.prompt-block .copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--dark);
+  color: var(--light);
+  border: none;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.prompt-block:hover .copy-btn { opacity: 1; }
+.prompt-block .copy-btn.copied { background: var(--green); }
 
-  /* ====== HERO ====== */
-  .hero {
-    position: relative;
-    overflow: hidden;
-    padding: 70px 0 100px;
-    background: var(--white);
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -80px;
-    right: -120px;
-    width: 720px;
-    height: 720px;
-    background: var(--red);
-    border-radius: 50%;
-    clip-path: polygon(20% 10%, 90% 0%, 100% 30%, 95% 70%, 70% 100%, 25% 95%, 0% 60%, 10% 20%);
-    opacity: 0.92;
-    z-index: 0;
-  }
-  .hero::after {
-    content: '';
-    position: absolute;
-    top: 40px;
-    right: 60px;
-    width: 80px;
-    height: 80px;
-    background: rgba(230, 57, 70, 0.35);
-    border-radius: 50%;
-    z-index: 0;
-  }
-  .hero .container {
-    position: relative;
-    z-index: 2;
-    display: grid;
-    grid-template-columns: 55% 45%;
-    gap: 40px;
-    align-items: center;
-  }
-  .hero-left h1 {
-    font-size: 54px;
-    font-weight: 800;
-    line-height: 1.08;
-    margin-bottom: 22px;
-    color: var(--dark);
-  }
-  .hero-left h1 .accent {
-    color: var(--red);
-    position: relative;
-    display: inline-block;
-  }
-  .hero-left h1 .accent::after {
-    content: '';
-    position: absolute;
-    left: 0; right: 0; bottom: 4px;
-    height: 6px;
-    background: var(--red);
-    opacity: 0.18;
-    z-index: -1;
-  }
-  .hero-subtext {
-    font-size: 18px;
-    color: var(--gray);
-    margin-bottom: 28px;
-    max-width: 520px;
-  }
-  .hero-phone {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--red);
-    margin-bottom: 24px;
-  }
-  .hero-phone i { font-size: 22px; }
-  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+/* --- CALLOUT & TIP --- */
+.callout {
+  background: #fdf6f3;
+  border-left: 3px solid var(--orange);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 18px;
+  margin: 1rem 0;
+  color: var(--dark);
+  font-size: 0.92rem;
+}
+.tip {
+  background: #f4f7f0;
+  border-left: 3px solid var(--green);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 18px;
+  margin: 1rem 0;
+  color: var(--dark);
+  font-size: 0.92rem;
+}
 
-  .hero-right {
-    position: relative;
-    min-height: 520px;
-  }
-  .hero-photo {
-    width: 100%;
-    max-width: 380px;
-    height: 500px;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: var(--shadow-lg);
-    margin-left: auto;
-    display: block;
-  }
-  .program-preview-stack {
-    position: absolute;
-    right: -20px;
-    top: 70px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 270px;
-    z-index: 3;
-  }
-  .preview-card {
-    background: var(--white);
-    border-left: 4px solid var(--red);
-    padding: 16px 18px;
-    border-radius: 4px;
-    box-shadow: var(--shadow);
-  }
-  .preview-card .label {
-    color: var(--red);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-    display: block;
-  }
-  .preview-card h4 {
-    font-size: 16px;
-    margin-bottom: 6px;
-    font-weight: 700;
-  }
-  .preview-card p {
-    font-size: 13px;
-    color: var(--gray);
-    line-height: 1.5;
-    margin: 0;
-  }
-  .more-programs-link {
-    position: absolute;
-    right: 0;
-    bottom: -10px;
-    z-index: 3;
-  }
+/* --- TABLES --- */
+.data-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+.data-table th { background: var(--dark); color: var(--light); padding: 10px 14px; text-align: left; font-weight: 600; font-size: 0.8rem; letter-spacing: 0.02em; }
+.data-table th:first-child { border-radius: var(--radius) 0 0 0; }
+.data-table th:last-child { border-radius: 0 var(--radius) 0 0; }
+.data-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+.data-table tr:nth-child(even) td { background: var(--light); }
+.data-table tr:hover td { background: #f3f1eb; }
 
-  /* ====== WELCOME + PROGRAM FINDER ====== */
-  .welcome {
-    background: var(--light-bg);
-    padding: 80px 0;
-  }
-  .welcome .container {
-    display: grid;
-    grid-template-columns: 55% 45%;
-    gap: 50px;
-    align-items: center;
-  }
-  .welcome-left h2 {
-    font-size: 36px;
-    margin-bottom: 18px;
-  }
-  .welcome-left p {
-    font-size: 15px;
-    line-height: 1.8;
-    margin-bottom: 22px;
-  }
-  .welcome-info-list {
-    margin-top: 28px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .welcome-info-list li {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 14px;
-    color: var(--dark);
-    font-weight: 600;
-  }
-  .welcome-info-list i {
-    color: var(--red);
-    width: 38px;
-    height: 38px;
-    background: rgba(230, 57, 70, 0.1);
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-  }
+/* --- ACCORDION --- */
+.accordion { margin: 0.6rem 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 18px;
+  background: var(--light);
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--dark);
+  text-align: left;
+  transition: background 0.2s;
+}
+.accordion-trigger:hover { background: #f0eee6; }
+.accordion-trigger .acc-icon {
+  font-size: 0.75rem;
+  transition: transform 0.3s;
+  color: var(--mid);
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+.accordion-trigger.open .acc-icon { transform: rotate(180deg); color: var(--orange); }
+.accordion-trigger .acc-count {
+  font-size: 0.7rem;
+  background: var(--orange);
+  color: var(--white);
+  padding: 2px 8px;
+  border-radius: 100px;
+  margin-left: 8px;
+  font-weight: 600;
+}
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  background: var(--white);
+}
+.accordion-content.open { max-height: 5000px; }
+.accordion-inner { padding: 18px; }
 
-  .finder-card {
-    background: var(--white);
-    box-shadow: var(--shadow-lg);
-    border-radius: 8px;
-    padding: 36px 30px;
-  }
-  .finder-card h3 {
-    font-size: 24px;
-    margin-bottom: 24px;
-  }
-  .finder-tabs {
-    display: flex;
-    gap: 24px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 24px;
-  }
-  .finder-tab {
-    padding: 10px 0;
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    cursor: pointer;
-    color: var(--gray);
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    transition: all 0.3s ease;
-  }
-  .finder-tab.active { color: var(--red); border-bottom-color: var(--red); }
-  .finder-field { margin-bottom: 16px; }
-  .finder-field select, .finder-field input {
-    width: 100%;
-    padding: 14px 16px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
-    color: var(--dark);
-    background: var(--white);
-    outline: none;
-    transition: border-color 0.3s ease;
-  }
-  .finder-field select:focus, .finder-field input:focus { border-color: var(--red); }
-  .finder-card .btn { width: 100%; padding: 16px; }
+/* --- PROMPT GENERATOR --- */
+.generator {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow);
+  border: 1.5px solid var(--orange);
+}
+.generator h2 { color: var(--orange); margin-bottom: 0.5rem; }
+.generator label { display: block; font-weight: 600; color: var(--dark); font-size: 0.85rem; margin: 1rem 0 0.3rem; }
+.generator input, .generator textarea, .generator select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+  font-family: 'Lora', Georgia, serif;
+  transition: border-color 0.2s;
+  background: var(--light);
+}
+.generator input:focus, .generator textarea:focus, .generator select:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(217,119,87,0.1);
+}
+.generator textarea { resize: vertical; min-height: 80px; }
+.gen-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 600px) { .gen-row { grid-template-columns: 1fr; } }
+.btn-generate {
+  margin-top: 1.25rem;
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  padding: 11px 28px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background 0.2s;
+  letter-spacing: 0.01em;
+}
+.btn-generate:hover { background: #c4613f; }
+.generated-output {
+  margin-top: 1.25rem;
+  background: var(--light);
+  border: 1.5px solid var(--blue);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--dark);
+  white-space: pre-wrap;
+  display: none;
+  position: relative;
+}
+.generated-output.visible { display: block; }
+.generated-output .copy-btn {
+  position: absolute; top: 10px; right: 10px;
+  background: var(--dark); color: var(--light); border: none;
+  padding: 5px 14px; border-radius: 100px; font-size: 0.75rem; font-family: 'Poppins', sans-serif; font-weight: 500; cursor: pointer;
+}
+.generated-output .copy-btn:hover { background: var(--orange); }
 
-  /* ====== PROGRAMS ====== */
-  .programs {
-    padding: 90px 0;
-    background: var(--white);
-    text-align: center;
-  }
-  .programs h2 {
-    font-size: 36px;
-    margin-bottom: 14px;
-  }
-  .programs-intro {
-    max-width: 600px;
-    margin: 0 auto 50px;
-    font-size: 15px;
-  }
-  .program-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    text-align: left;
-    margin-bottom: 40px;
-  }
-  .program-card {
-    background: var(--white);
-    box-shadow: var(--shadow);
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .program-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-  }
-  .program-card img { width: 100%; height: 220px; }
-  .program-card-body { padding: 24px; }
-  .program-card h3 {
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
-  .program-card p {
-    font-size: 14px;
-    margin-bottom: 18px;
-    line-height: 1.7;
-  }
-  .program-card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid var(--border);
-    padding-top: 16px;
-  }
-  .program-meta {
-    color: var(--red);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  .program-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .program-actions img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-  }
-  .program-actions i {
-    color: var(--gray);
-    cursor: pointer;
-    font-size: 14px;
-  }
-  .program-actions i:hover { color: var(--red); }
+/* --- TOKENIZER --- */
+.tokenizer-tool {
+  background: var(--light);
+  border: 1.5px solid var(--blue);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin: 1.25rem 0;
+}
+.tokenizer-tool h4 { color: var(--blue); margin-bottom: 0.5rem; }
+.tokenizer-tool textarea {
+  width: 100%; min-height: 120px; padding: 12px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.85rem; resize: vertical; margin-bottom: 0.75rem;
+  background: var(--white);
+}
+.tokenizer-tool textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(106,155,204,0.12); }
+.token-options { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
+.token-options label {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 0.8rem; color: var(--dark); font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  background: var(--white); padding: 5px 12px; border-radius: 100px;
+  border: 1px solid var(--border); cursor: pointer; transition: all 0.2s;
+}
+.token-options label:hover { border-color: var(--blue); }
+.token-options input[type="checkbox"] { accent-color: var(--blue); }
+.btn-tokenize {
+  background: var(--blue); color: var(--white); border: none;
+  padding: 9px 22px; border-radius: 100px; font-weight: 600;
+  cursor: pointer; font-size: 0.85rem; transition: background 0.2s; margin-right: 8px;
+}
+.btn-tokenize:hover { background: #5789b8; }
+.btn-restore {
+  background: var(--white); color: var(--blue); border: 1.5px solid var(--blue);
+  padding: 7px 18px; border-radius: 100px; font-weight: 600;
+  cursor: pointer; font-size: 0.85rem; transition: all 0.2s;
+}
+.btn-restore:hover { background: #f0f5fa; }
+.token-result {
+  margin-top: 1rem; padding: 12px 16px;
+  background: var(--white); border: 1px solid var(--green);
+  border-radius: var(--radius); font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.85rem; line-height: 1.6; white-space: pre-wrap;
+  display: none; position: relative;
+}
+.token-result.visible { display: block; }
+.token-result .copy-btn {
+  position: absolute; top: 8px; right: 8px;
+  background: var(--green); color: var(--white); border: none;
+  padding: 4px 12px; border-radius: 100px; font-size: 0.72rem; font-family: 'Poppins', sans-serif; font-weight: 500; cursor: pointer;
+}
+.token-highlight { background: #fef3c7; border-radius: 2px; padding: 1px 2px; }
+.method-toggle { display: flex; gap: 0; margin: 1rem 0; }
+.method-toggle button {
+  flex: 1; padding: 9px 16px; border: 1.5px solid var(--border);
+  background: var(--white); font-size: 0.85rem; font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer; color: var(--mid); transition: all 0.2s;
+}
+.method-toggle button:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+.method-toggle button:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+.method-toggle button.active { background: var(--blue); color: var(--white); border-color: var(--blue); }
+.method-panel { display: none; }
+.method-panel.visible { display: block; }
 
-  /* ====== DOWNLOAD BAND ====== */
-  .download-band {
-    background: var(--footer-dark);
-    color: var(--white);
-    overflow: hidden;
-  }
-  .download-band .container {
-    display: grid;
-    grid-template-columns: 45% 55%;
-    align-items: center;
-    gap: 50px;
-    padding-top: 70px;
-    padding-bottom: 70px;
-    position: relative;
-  }
-  .download-band img {
-    width: 100%;
-    max-width: 420px;
-    border-radius: 8px;
-    transform: rotate(-5deg);
-    box-shadow: var(--shadow-lg);
-  }
-  .download-band h2 {
-    color: var(--white);
-    font-size: 36px;
-    margin-bottom: 18px;
-  }
-  .download-band p {
-    color: #cccccc;
-    font-size: 16px;
-    line-height: 1.8;
-    margin-bottom: 24px;
-    max-width: 500px;
-  }
-  .play-circle {
-    position: absolute;
-    bottom: 40px;
-    right: 24px;
-    width: 64px;
-    height: 64px;
-    background: var(--red);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--white);
-    font-size: 22px;
-    cursor: pointer;
-    box-shadow: 0 0 0 0 rgba(230,57,70,0.7);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(230,57,70,0.5); }
-    70% { box-shadow: 0 0 0 18px rgba(230,57,70,0); }
-    100% { box-shadow: 0 0 0 0 rgba(230,57,70,0); }
-  }
+/* --- VOICE --- */
+.voice-tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+@media (max-width: 700px) { .voice-tools-grid { grid-template-columns: 1fr; } }
+.voice-card {
+  background: var(--light); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.25rem;
+}
+.voice-card h4 { color: var(--dark); margin: 0 0 0.5rem; font-size: 0.95rem; }
+.voice-card p { font-size: 0.88rem; margin-bottom: 0.4rem; }
 
-  /* ====== STATS + WHY ====== */
-  .stats-why {
-    padding: 90px 0;
-    background: var(--white);
-  }
-  .stats-why .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-  }
-  .stats-why h2 {
-    font-size: 30px;
-    margin-bottom: 16px;
-  }
-  .stats-why p {
-    font-size: 15px;
-    margin-bottom: 28px;
-    line-height: 1.8;
-  }
-  .stat-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  .stat-box {
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 24px 14px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    transition: transform 0.3s ease;
-  }
-  .stat-box:hover { transform: translateY(-4px); }
-  .stat-box .num {
-    color: var(--red);
-    font-family: 'Poppins', sans-serif;
-    font-size: 38px;
-    font-weight: 800;
-    line-height: 1;
-    margin-bottom: 6px;
-    display: block;
-  }
-  .stat-box .label {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--dark);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  .why-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px 22px;
-  }
-  .why-list li {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 14px;
-    color: var(--dark);
-    font-weight: 600;
-  }
-  .why-list i {
-    color: var(--red);
-    font-size: 18px;
-    flex-shrink: 0;
-  }
+/* --- FOOTER --- */
+.site-footer {
+  background: var(--dark);
+  color: var(--mid);
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  font-size: 0.85rem;
+}
+.site-footer a { color: var(--orange); }
+.site-footer .footer-brand { color: var(--white); font-weight: 600; font-size: 0.95rem; margin-bottom: 0.5rem; }
+.site-footer .footer-logo { height: 32px; filter: brightness(0) invert(1); margin-bottom: 0.75rem; }
+.site-footer .footer-logo-link { display: inline-block; }
 
-  /* ====== BLOG + EVENTS ====== */
-  .blog-events {
-    padding: 90px 0;
-    background: var(--light-bg);
-  }
-  .blog-events .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-  }
-  .blog-events h2 {
-    font-size: 28px;
-    margin-bottom: 28px;
-  }
-  .blog-list { display: flex; flex-direction: column; gap: 22px; }
-  .blog-item {
-    background: var(--white);
-    padding: 22px 24px;
-    border-radius: 6px;
-    box-shadow: var(--shadow);
-    transition: transform 0.3s ease;
-  }
-  .blog-item:hover { transform: translateY(-3px); }
-  .blog-item .date {
-    color: var(--red);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    margin-bottom: 6px;
-    display: block;
-  }
-  .blog-item h3 {
-    font-size: 17px;
-    font-weight: 600;
-    line-height: 1.4;
-  }
-  .blog-item h3:hover { color: var(--red); cursor: pointer; }
+/* --- BACK BUTTON --- */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--orange); font-size: 0.85rem; font-weight: 500; cursor: pointer;
+  margin-bottom: 1.5rem; padding: 6px 14px; border-radius: 100px;
+  border: 1px solid var(--border); background: var(--white); transition: all 0.2s;
+}
+.back-btn:hover { border-color: var(--orange); background: #fdf8f5; }
 
-  .events-list { display: flex; flex-direction: column; gap: 16px; }
-  .event-item {
-    background: var(--white);
-    padding: 20px 22px;
-    border-radius: 6px;
-    box-shadow: var(--shadow);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    transition: transform 0.3s ease;
-  }
-  .event-item:hover { transform: translateY(-3px); }
-  .event-item h3 { font-size: 16px; font-weight: 600; }
-  .event-item .event-date {
-    text-align: center;
-    flex-shrink: 0;
-    background: var(--red);
-    color: var(--white);
-    padding: 8px 12px;
-    border-radius: 4px;
-    min-width: 64px;
-  }
-  .event-item .event-date .day { font-size: 20px; font-weight: 800; display: block; line-height: 1; }
-  .event-item .event-date .month { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-  .events-more { margin-top: 18px; display: inline-block; }
+/* --- EDITION BADGE --- */
+.edition-badge {
+  display: inline-block; background: var(--light); border: 1px solid var(--border);
+  color: var(--mid); font-size: 0.75rem; font-weight: 600;
+  padding: 4px 14px; border-radius: 100px; margin-bottom: 1rem;
+  letter-spacing: 0.02em;
+}
 
-  .blog-events-cta {
-    text-align: center;
-    margin-top: 50px;
-    grid-column: 1 / -1;
-  }
-
-  /* ====== TESTIMONIALS ====== */
-  .testimonials {
-    padding: 90px 0;
-    background: var(--white);
-    text-align: center;
-  }
-  .testimonials h2 {
-    font-size: 36px;
-    margin-bottom: 14px;
-  }
-  .testimonials-intro {
-    max-width: 600px;
-    margin: 0 auto 50px;
-    font-size: 15px;
-  }
-  .testimonial-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    text-align: left;
-    margin-bottom: 30px;
-  }
-  .testimonial-featured {
-    position: relative;
-  }
-  .testimonial-featured > img {
-    width: 100%;
-    height: 420px;
-    border-radius: 8px;
-  }
-  .featured-quote {
-    background: var(--white);
-    padding: 28px 26px;
-    border-left: 4px solid var(--red);
-    box-shadow: var(--shadow-lg);
-    position: absolute;
-    bottom: 30px;
-    left: 24px;
-    right: 24px;
-    border-radius: 4px;
-  }
-  .featured-quote p {
-    font-size: 15px;
-    color: var(--dark);
-    line-height: 1.7;
-    margin-bottom: 14px;
-    font-style: italic;
-  }
-  .testimonial-stack { display: flex; flex-direction: column; gap: 24px; }
-  .testimonial-card {
-    background: var(--white);
-    padding: 26px 26px;
-    border-radius: 6px;
-    box-shadow: var(--shadow);
-  }
-  .testimonial-card p {
-    font-size: 15px;
-    color: var(--dark);
-    line-height: 1.7;
-    margin-bottom: 18px;
-    font-style: italic;
-  }
-  .testimonial-author {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .testimonial-author img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-  }
-  .testimonial-author .name {
-    color: var(--dark);
-    font-weight: 700;
-    font-size: 14px;
-  }
-  .testimonial-author .title {
-    color: var(--gray);
-    font-size: 13px;
-  }
-
-  /* ====== PRE-FOOTER ====== */
-  .pre-footer {
-    background: var(--dark);
-    padding: 36px 0;
-    color: var(--white);
-  }
-  .pre-footer .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: center;
-  }
-  .pre-footer h3 {
-    color: var(--white);
-    font-size: 22px;
-    margin-bottom: 14px;
-  }
-  .newsletter-form {
-    display: flex;
-    gap: 0;
-    max-width: 480px;
-  }
-  .newsletter-form input {
-    flex: 1;
-    padding: 14px 18px;
-    border: none;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
-    border-radius: 4px 0 0 4px;
-    outline: none;
-  }
-  .newsletter-form button {
-    background: var(--red);
-    color: var(--white);
-    padding: 0 26px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 13px;
-    border-radius: 0 4px 4px 0;
-    transition: background 0.3s ease;
-  }
-  .newsletter-form button:hover { background: var(--red-dark); }
-  .social-row { text-align: right; }
-  .social-row .social-circles {
-    display: inline-flex;
-    gap: 12px;
-    margin-top: 8px;
-  }
-  .social-circles a {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.08);
-    color: var(--white);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 17px;
-    transition: all 0.3s ease;
-  }
-  .social-circles a:hover { background: var(--red); transform: translateY(-3px); }
-
-  /* ====== FOOTER ====== */
-  .footer {
-    background: var(--footer-darker);
-    color: var(--link-gray);
-    padding: 70px 0 0;
-  }
-  .footer-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 40px;
-    padding-bottom: 50px;
-  }
-  .footer-col h4 {
-    color: var(--white);
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 22px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid var(--red);
-    display: inline-block;
-  }
-  .footer-col ul li {
-    margin-bottom: 12px;
-  }
-  .footer-col ul li a {
-    color: var(--link-gray);
-    font-size: 13px;
-    transition: color 0.3s ease;
-  }
-  .footer-col ul li a:hover { color: var(--red); }
-  .footer-col .footer-btn {
-    display: block;
-    background: var(--red);
-    color: var(--white);
-    padding: 12px 16px;
-    text-align: center;
-    border-radius: 4px;
-    font-weight: 700;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-    transition: background 0.3s ease;
-  }
-  .footer-col .footer-btn:hover { background: var(--red-dark); color: var(--white); }
-
-  .footer-bottom {
-    border-top: 1px solid rgba(255,255,255,0.08);
-    padding: 22px 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    align-items: center;
-    gap: 20px;
-    font-size: 13px;
-  }
-  .footer-bottom .logo-icon {
-    height: 36px;
-    filter: brightness(0) invert(1);
-  }
-  .footer-bottom-center {
-    text-align: center;
-  }
-  .footer-bottom-center a {
-    color: var(--link-gray);
-    margin: 0 6px;
-  }
-  .footer-bottom-center a:hover { color: var(--red); }
-  .footer-bottom-right { text-align: right; }
-
-  /* ====== RESPONSIVE ====== */
-  @media (max-width: 1024px) {
-    .hero .container,
-    .welcome .container,
-    .download-band .container,
-    .stats-why .container,
-    .blog-events .container,
-    .testimonial-grid {
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-    .hero::before {
-      width: 500px;
-      height: 500px;
-      top: -100px;
-      right: -180px;
-      opacity: 0.85;
-    }
-    .hero-right { min-height: 0; }
-    .hero-photo { max-width: 100%; margin: 0 auto; }
-    .program-preview-stack {
-      position: static;
-      width: 100%;
-      margin-top: 24px;
-    }
-    .more-programs-link { position: static; margin-top: 16px; display: inline-block; }
-    .program-grid { grid-template-columns: 1fr 1fr; }
-    .footer-grid { grid-template-columns: repeat(2, 1fr); }
-    .nav-links { gap: 18px; }
-    .nav-links a { font-size: 13px; }
-  }
-
-  @media (max-width: 768px) {
-    .top-bar { display: none; }
-    .nav-links {
-      display: none;
-      position: absolute;
-      top: 80px;
-      left: 0;
-      right: 0;
-      background: var(--white);
-      flex-direction: column;
-      gap: 0;
-      padding: 16px 0;
-      box-shadow: var(--shadow);
-    }
-    .nav-links.open { display: flex; }
-    .nav-links a {
-      padding: 12px 24px;
-      width: 100%;
-      border-bottom: 1px solid var(--border);
-    }
-    .hamburger { display: block; }
-    .navbar .container { position: relative; }
-
-    .hero { padding: 50px 0 70px; }
-    .hero-left h1 { font-size: 38px; }
-    .hero-subtext { font-size: 16px; }
-    .hero-phone { font-size: 20px; }
-    .hero::before { width: 360px; height: 360px; top: -80px; right: -180px; opacity: 0.5; }
-
-    .welcome, .programs, .stats-why, .blog-events, .testimonials { padding: 50px 0; }
-    .programs h2, .testimonials h2, .download-band h2 { font-size: 28px; }
-    .welcome-left h2 { font-size: 28px; }
-    .program-grid { grid-template-columns: 1fr; }
-
-    .stats-why .container { gap: 40px; }
-    .stat-row { gap: 10px; }
-    .stat-box { padding: 18px 8px; }
-    .stat-box .num { font-size: 28px; }
-    .why-list { grid-template-columns: 1fr; }
-
-    .download-band img { transform: none; }
-    .play-circle { bottom: 16px; right: 16px; width: 52px; height: 52px; font-size: 18px; }
-
-    .testimonial-featured > img { height: 320px; }
-    .featured-quote { position: static; margin-top: -40px; margin-left: 16px; margin-right: 16px; }
-
-    .pre-footer .container { grid-template-columns: 1fr; }
-    .social-row { text-align: left; }
-    .footer-grid { grid-template-columns: 1fr; gap: 30px; padding-bottom: 30px; }
-    .footer-bottom { grid-template-columns: 1fr; text-align: center; gap: 14px; }
-    .footer-bottom-right, .footer-bottom-center { text-align: center; }
-    .footer-bottom .logo { justify-content: center; }
-  }
-
-  @media (max-width: 480px) {
-    .hero-left h1 { font-size: 32px; }
-    .hero-ctas { flex-direction: column; align-items: stretch; }
-    .hero-ctas .btn { text-align: center; }
-    .newsletter-form { flex-direction: column; }
-    .newsletter-form input { border-radius: 4px; margin-bottom: 8px; }
-    .newsletter-form button { border-radius: 4px; padding: 14px; }
-  }
+/* --- MISC --- */
+html { scroll-behavior: smooth; }
+.section:target { animation: flash 0.6s ease; }
+@keyframes flash { 0%,100%{ box-shadow: var(--shadow); } 50%{ box-shadow: 0 0 0 3px var(--orange); } }
 </style>
 </head>
 <body>
 
-<!-- ========== TOP UTILITY BAR ========== -->
-<div class="top-bar">
-  <div class="container">
-    <div class="top-bar-left">
-      <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-      <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
-      <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-      <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-    </div>
-    <div class="top-bar-center">
-      <span><i class="fas fa-envelope"></i> hello@aiuniversity.com</span>
-      <span class="divider">|</span>
-      <span><i class="fas fa-phone"></i> +1 (888) 775-0001</span>
-    </div>
-    <div class="top-bar-right">
-      <span><i class="fas fa-globe"></i> EN <i class="fas fa-caret-down"></i></span>
-    </div>
+<!-- HEADER -->
+<header class="site-header">
+  <div class="logo">
+    <a href="#hero-section"><img src="aiuno.svg" alt="AI University"></a>
+  </div>
+  <nav class="header-nav">
+    <button class="nav-pill active" id="nav-home" onclick="goHome()">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </button>
+    <button class="nav-pill" onclick="selectAudience('nonprofit')">
+      <svg viewBox="0 0 24 24"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>
+      Nonprofit
+    </button>
+    <button class="nav-pill" onclick="selectAudience('business')">
+      <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      Business
+    </button>
+    <button class="nav-pill" onclick="selectAudience('personal')">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Personal
+    </button>
+    <button class="nav-pill accent" onclick="scrollToGenerator()">
+      <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Prompt Generator
+    </button>
+    <button class="nav-pill accent" onclick="scrollToTokenizer()">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Tokenizer
+    </button>
+    <button class="nav-pill accent" onclick="scrollToPromptLib()">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Prompt Library
+    </button>
+    <a href="mailto:hello@aiuniversity.com" class="nav-pill cta" style="text-decoration:none;">
+      <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Let's Talk
+    </a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero" id="hero-section">
+  <div class="badge">Free AI Training Resource for Organizations</div>
+  <h1>How to Talk to <span>Your AI</span></h1>
+  <p>Copy-and-paste prompts, real examples, and a proven communication model for every tool you use every day.</p>
+</div>
+
+<!-- AUDIENCE CHOOSER -->
+<div class="chooser" id="chooser-section">
+  <div class="chooser-card" onclick="selectAudience('nonprofit')">
+    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg></div>
+    <h3>Nonprofit Leader</h3>
+    <p>You run or work at a nonprofit, health department, or community organization. Grants, funders, boards, and limited staff are your reality.</p>
+  </div>
+  <div class="chooser-card" onclick="selectAudience('business')">
+    <div class="card-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+    <h3>Small Business Owner</h3>
+    <p>You run a business and need AI to handle emails, proposals, invoices, marketing, and client communications faster.</p>
+  </div>
+  <div class="chooser-card" onclick="selectAudience('personal')">
+    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+    <h3>Personal Use</h3>
+    <p>You want to get better at using AI for your own productivity &mdash; writing, organizing, creating content, and saving time.</p>
   </div>
 </div>
 
-<!-- ========== NAV ========== -->
-<nav class="navbar">
-  <div class="container">
-    <a href="#" class="logo">
-      <img src="aiuno.svg" class="logo-icon" alt="AI University">
-    </a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#" class="active">Home</a></li>
-      <li><a href="#programs" class="has-dropdown">Programs</a></li>
-      <li><a href="#" class="has-dropdown">Enrollment</a></li>
-      <li><a href="#" class="has-dropdown">About Us</a></li>
-      <li><a href="#events">Events</a></li>
-      <li><a href="#blog">Blog</a></li>
-      <li><a href="#" class="has-dropdown">Resources</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-    <button class="hamburger" id="hamburger" aria-label="Menu"><i class="fas fa-bars"></i></button>
+<!-- MAIN CONTENT -->
+<div class="main-container" id="main-content">
+  <button class="back-btn" onclick="goHome()">&#8592; Choose a different path</button>
+  <span class="edition-badge" id="edition-label"></span>
+  <div class="content-layout">
+    <aside class="sidebar" id="sidebar-nav"></aside>
+    <div class="content-area" id="content-area"></div>
   </div>
-</nav>
+</div>
 
-<!-- ========== HERO ========== -->
-<section class="hero">
-  <div class="container">
-    <div class="hero-left">
-      <h1>Do You Know How to Talk to <span class="accent">AI</span>?</h1>
-      <p class="hero-subtext">Most people type. Few communicate. Join thousands learning the skill that makes AI actually useful.</p>
-      <div class="hero-phone">
-        <i class="fas fa-phone-volume"></i>
-        <span>+1 (888) 775-0001</span>
-      </div>
-      <div class="hero-ctas">
-        <a href="#programs" class="btn btn-sm">Start Free <i class="fas fa-arrow-right"></i></a>
-        <a href="#" class="btn btn-outline btn-sm">Watch Demo <i class="fas fa-arrow-right"></i></a>
-      </div>
-    </div>
-    <div class="hero-right">
-      <img src="https://picsum.photos/400/500?random=1" alt="Confident person at laptop" class="hero-photo">
-      <div class="program-preview-stack">
-        <div class="preview-card">
-          <span class="label">4-Week Course</span>
-          <h4>Prompt Foundations</h4>
-          <p>Master the structure behind prompts that get results on any AI platform.</p>
-        </div>
-        <div class="preview-card">
-          <span class="label">6-Week Intensive</span>
-          <h4>AI Strategy for Business</h4>
-          <p>Build AI workflows that save 10+ hours per week across your team.</p>
-        </div>
-      </div>
-      <a href="#programs" class="red-link more-programs-link">More Programs <i class="fas fa-arrow-right"></i></a>
-    </div>
-  </div>
-</section>
-
-<!-- ========== WELCOME + PROGRAM FINDER ========== -->
-<section class="welcome">
-  <div class="container">
-    <div class="welcome-left">
-      <span class="small-label">Welcome to</span>
-      <h2>AI University</h2>
-      <p>AI University was founded on a simple observation: AI is only as good as the person talking to it. With over 5,000 graduates across 40 industries, we've built the most practical AI communication curriculum available — no coding required. Whether you're a marketer, exec, educator, or entrepreneur, we'll teach you to speak AI fluently.</p>
-      <a href="#programs" class="red-link">Browse All Programs <i class="fas fa-arrow-right"></i></a>
-      <ul class="welcome-info-list">
-        <li><i class="far fa-clock"></i> Live Classes: Mon–Fri, 10:00 AM – 6:00 PM EST</li>
-        <li><i class="fas fa-laptop"></i> Self-Paced Modules Available 24/7</li>
-      </ul>
-    </div>
-    <div class="finder-card">
-      <h3>Find your program</h3>
-      <div class="finder-tabs">
-        <span class="finder-tab active" data-tab="level">Skill Level</span>
-        <span class="finder-tab" data-tab="topic">Topic</span>
-      </div>
-      <div class="finder-field">
-        <select aria-label="Skill level">
-          <option>All Levels</option>
-          <option>Beginner</option>
-          <option>Intermediate</option>
-          <option>Advanced</option>
-        </select>
-      </div>
-      <div class="finder-field">
-        <select aria-label="Topic">
-          <option>All Topics</option>
-          <option>Foundations</option>
-          <option>Content Creation</option>
-          <option>Business Strategy</option>
-          <option>Team Workflows</option>
-        </select>
-      </div>
-      <div class="finder-field">
-        <input type="text" placeholder="What do you want to learn?" aria-label="Search">
-      </div>
-      <button class="btn">Find My Program</button>
-    </div>
-  </div>
-</section>
-
-<!-- ========== PROGRAMS ========== -->
-<section class="programs" id="programs">
-  <div class="container">
-    <span class="small-label">Curriculum</span>
-    <h2>Our Programs</h2>
-    <p class="programs-intro">Pick the program that matches where you are — whether you're brand new to AI or building workflows for your entire team.</p>
-    <div class="program-grid">
-      <article class="program-card">
-        <img src="https://picsum.photos/400/220?random=11" alt="Person typing on laptop">
-        <div class="program-card-body">
-          <h3>Prompt Foundations</h3>
-          <p>Learn the anatomy of a great prompt — structure, context, constraints, and output control. Works on ChatGPT, Claude, Gemini, and any AI tool.</p>
-          <div class="program-card-footer">
-            <span class="program-meta">4 Weeks / Self-Paced</span>
-            <div class="program-actions">
-              <img src="https://picsum.photos/64/64?random=21" alt="Instructor">
-              <i class="fas fa-share-alt" aria-label="Share"></i>
-            </div>
-          </div>
-        </div>
-      </article>
-      <article class="program-card">
-        <img src="https://picsum.photos/400/220?random=12" alt="Whiteboard strategy session">
-        <div class="program-card-body">
-          <h3>Advanced Prompt Engineering</h3>
-          <p>Chain-of-thought, few-shot learning, system prompts, and multi-step workflows. For people ready to go beyond the basics.</p>
-          <div class="program-card-footer">
-            <span class="program-meta">6 Weeks / Live + Async</span>
-            <div class="program-actions">
-              <img src="https://picsum.photos/64/64?random=22" alt="Instructor">
-              <i class="fas fa-share-alt" aria-label="Share"></i>
-            </div>
-          </div>
-        </div>
-      </article>
-      <article class="program-card">
-        <img src="https://picsum.photos/400/220?random=13" alt="Creative workspace">
-        <div class="program-card-body">
-          <h3>AI for Content Creators</h3>
-          <p>Write blogs, social posts, newsletters, and video scripts with AI as your co-writer — without sounding like a robot.</p>
-          <div class="program-card-footer">
-            <span class="program-meta">4 Weeks / Self-Paced</span>
-            <div class="program-actions">
-              <img src="https://picsum.photos/64/64?random=23" alt="Instructor">
-              <i class="fas fa-share-alt" aria-label="Share"></i>
-            </div>
-          </div>
-        </div>
-      </article>
-      <article class="program-card">
-        <img src="https://picsum.photos/400/220?random=14" alt="Team meeting">
-        <div class="program-card-body">
-          <h3>AI Strategy for Teams</h3>
-          <p>Build AI policies, prompt libraries, and workflows your whole organization can use. Designed for managers and team leads.</p>
-          <div class="program-card-footer">
-            <span class="program-meta">8 Weeks / Cohort-Based</span>
-            <div class="program-actions">
-              <img src="https://picsum.photos/64/64?random=24" alt="Instructor">
-              <i class="fas fa-share-alt" aria-label="Share"></i>
-            </div>
-          </div>
-        </div>
-      </article>
-    </div>
-    <a href="#" class="btn btn-outline">More Programs</a>
-  </div>
-</section>
-
-<!-- ========== DOWNLOAD BAND ========== -->
-<section class="download-band">
-  <div class="container">
-    <img src="https://picsum.photos/600/420?random=31" alt="AI Starter Kit on tablet">
-    <div>
-      <span class="small-label">Free Resource</span>
-      <h2>Download Our Free AI Starter Kit</h2>
-      <p>50 ready-to-use prompts for marketing, writing, research, and business operations. Used by 12,000+ professionals. Enter your email at aiuniversity.com to grab your copy.</p>
-      <a href="#" class="btn">Get The Kit <i class="fas fa-download"></i></a>
-    </div>
-    <div class="play-circle" aria-label="Play preview"><i class="fas fa-play"></i></div>
-  </div>
-</section>
-
-<!-- ========== STATS + WHY ========== -->
-<section class="stats-why">
-  <div class="container">
-    <div>
-      <span class="small-label">Accreditation</span>
-      <h2>Certified AI Communication</h2>
-      <p>Every AI University program ends with a certification employers actually recognize. We partner with leading workforce development bodies to ensure the credential signals real, verified skill — not just attendance.</p>
-      <div class="stat-row">
-        <div class="stat-box">
-          <span class="num">12</span>
-          <span class="label">Programs</span>
-        </div>
-        <div class="stat-box">
-          <span class="num">8</span>
-          <span class="label">Expert Instructors</span>
-        </div>
-        <div class="stat-box">
-          <span class="num">5,000+</span>
-          <span class="label">Graduates</span>
-        </div>
-      </div>
-    </div>
-    <div>
-      <span class="small-label">The AI University Difference</span>
-      <h2>Why Choose AI University</h2>
-      <p>We're not a coding bootcamp. We teach the practical, transferable skill of communicating clearly with AI — the kind of skill that pays off the day you finish your first lesson.</p>
-      <ul class="why-list">
-        <li><i class="fas fa-check-circle"></i> No Coding Required — Ever</li>
-        <li><i class="fas fa-check-circle"></i> Works on Any AI Platform</li>
-        <li><i class="fas fa-check-circle"></i> Live Instructor Support</li>
-        <li><i class="fas fa-check-circle"></i> Real-World Projects</li>
-        <li><i class="fas fa-check-circle"></i> Flexible Scheduling</li>
-        <li><i class="fas fa-check-circle"></i> Certificate of Completion</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- ========== BLOG + EVENTS ========== -->
-<section class="blog-events" id="blog">
-  <div class="container">
-    <div>
-      <span class="small-label">Insights</span>
-      <h2>Blog &amp; News</h2>
-      <div class="blog-list">
-        <article class="blog-item">
-          <span class="date">12 May 2026</span>
-          <h3>Why 90% of People Use AI Wrong (And How to Fix It)</h3>
-        </article>
-        <article class="blog-item">
-          <span class="date">3 May 2026</span>
-          <h3>The 5 Prompt Patterns That Work on Every AI Model</h3>
-        </article>
-        <article class="blog-item">
-          <span class="date">28 April 2026</span>
-          <h3>How One Nonprofit Saved 200 Hours With Better Prompts</h3>
-        </article>
-      </div>
-    </div>
-    <div id="events">
-      <span class="small-label">Calendar</span>
-      <h2>Events</h2>
-      <div class="events-list">
-        <div class="event-item">
-          <div class="event-date"><span class="day">24</span><span class="month">May</span></div>
-          <h3>Free Workshop: Intro to Prompt Engineering</h3>
-        </div>
-        <div class="event-item">
-          <div class="event-date"><span class="day">07</span><span class="month">Jun</span></div>
-          <h3>AI University Live: AI for Small Business</h3>
-        </div>
-        <div class="event-item">
-          <div class="event-date"><span class="day">18</span><span class="month">Jun</span></div>
-          <h3>Masterclass: Building AI Workflows That Scale</h3>
-        </div>
-      </div>
-      <a href="#" class="red-link events-more">More Events <i class="fas fa-arrow-right"></i></a>
-    </div>
-    <div class="blog-events-cta">
-      <a href="#" class="btn btn-outline">Explore All Blog &amp; News</a>
-    </div>
-  </div>
-</section>
-
-<!-- ========== TESTIMONIALS ========== -->
-<section class="testimonials">
-  <div class="container">
-    <span class="small-label">Our Graduates</span>
-    <h2>What Our Graduates Say</h2>
-    <p class="testimonials-intro">Real people, real workflows, real time saved. Here's what students tell us after a few weeks of practice.</p>
-    <div class="testimonial-grid">
-      <div class="testimonial-featured">
-        <img src="https://picsum.photos/600/420?random=41" alt="Featured graduate">
-        <div class="featured-quote">
-          <p>"Before AI University, I was spending 45 minutes wrestling with ChatGPT. Now I get better results in under 5 minutes. This changed how I work."</p>
-          <a href="#" class="red-link">Read more <i class="fas fa-arrow-right"></i></a>
-        </div>
-      </div>
-      <div class="testimonial-stack">
-        <div class="testimonial-card">
-          <p>"I thought I knew how to use AI. Week one proved I had no idea. Worth every minute."</p>
-          <div class="testimonial-author">
-            <img src="https://picsum.photos/100/100?random=42" alt="Maria Santos">
-            <div>
-              <div class="name">Maria Santos</div>
-              <div class="title">Marketing Director</div>
-            </div>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <p>"My team went from skeptical to obsessed. We built an entire prompt library in two weeks."</p>
-          <div class="testimonial-author">
-            <img src="https://picsum.photos/100/100?random=43" alt="James Okonkwo">
-            <div>
-              <div class="name">James Okonkwo</div>
-              <div class="title">Operations Lead</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <a href="#" class="red-link">See All Testimonials <i class="fas fa-arrow-right"></i></a>
-  </div>
-</section>
-
-<!-- ========== PRE-FOOTER ========== -->
-<section class="pre-footer">
-  <div class="container">
-    <div>
-      <h3>Stay Updated</h3>
-      <form class="newsletter-form" onsubmit="event.preventDefault(); this.querySelector('input').value=''; alert('Thanks for subscribing!');">
-        <input type="email" placeholder="Enter your email" required>
-        <button type="submit">Subscribe Now</button>
-      </form>
-    </div>
-    <div class="social-row">
-      <h3>Let's Get Social</h3>
-      <div class="social-circles">
-        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
-        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ========== FOOTER ========== -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-col">
-        <h4>Company</h4>
-        <ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Our Method</a></li>
-          <li><a href="#">Instructors</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Press</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Programs</h4>
-        <ul>
-          <li><a href="#">Prompt Foundations</a></li>
-          <li><a href="#">Advanced Engineering</a></li>
-          <li><a href="#">AI for Creators</a></li>
-          <li><a href="#">AI for Teams</a></li>
-          <li><a href="#">Corporate Training</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Students</h4>
-        <ul>
-          <li><a href="#">Student Portal</a></li>
-          <li><a href="#">Community</a></li>
-          <li><a href="#">Internships</a></li>
-          <li><a href="#">Success Stories</a></li>
-          <li><a href="#">FAQ</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Quick Links</h4>
-        <a href="#" class="footer-btn">Get Started</a>
-        <a href="#" class="footer-btn">Request Info</a>
-        <a href="#" class="footer-btn">Contact Us</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <a href="#" class="logo">
-        <img src="aiuno.svg" class="logo-icon" alt="AI University">
-      </a>
-      <div class="footer-bottom-center">
-        <a href="#">Privacy Policy</a> | <a href="#">Terms &amp; Conditions</a>
-      </div>
-      <div class="footer-bottom-right">© 2026 AI University | All Rights Reserved</div>
-    </div>
-  </div>
+<!-- FOOTER -->
+<footer class="site-footer">
+  <a href="#hero-section" class="footer-logo-link"><img src="aiuno.svg" alt="AI University" class="footer-logo"></a>
+  <div class="footer-brand">AI University</div>
+  <p>+1 (888) 775-0001 &nbsp;|&nbsp; <a href="mailto:hello@aiuniversity.com">hello@aiuniversity.com</a></p>
+  <p style="margin-top:0.75rem;">&copy; 2026 AI University. All Rights Reserved.</p>
+  <p style="margin-top:0.5rem;font-size:0.78rem;color:rgba(176,174,165,0.6);">
+    Works with ChatGPT &nbsp;|&nbsp; Microsoft Copilot &nbsp;|&nbsp; Google Gemini &nbsp;|&nbsp; Claude &nbsp;|&nbsp; Any AI Assistant
+  </p>
 </footer>
 
 <script>
-  // Hamburger toggle
-  const hamburger = document.getElementById('hamburger');
-  const navLinks = document.getElementById('navLinks');
-  hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
-  });
-  navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => navLinks.classList.remove('open'));
-  });
+// =============================================
+// HELPERS
+// =============================================
+function prompt(text) {
+  const escaped = text.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return `<div class="prompt-block" onclick="copyPrompt(this)">${escaped}<button class="copy-btn">Copy</button></div>`;
+}
 
-  // Finder tabs
-  document.querySelectorAll('.finder-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.finder-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
+function accordion(title, content, count) {
+  const countBadge = count ? `<span class="acc-count">${count}</span>` : '';
+  return `<div class="accordion">
+    <button class="accordion-trigger" onclick="toggleAccordion(this)">
+      <span>${title}${countBadge}</span>
+      <span class="acc-icon">&#9662;</span>
+    </button>
+    <div class="accordion-content">
+      <div class="accordion-inner">${content}</div>
+    </div>
+  </div>`;
+}
+
+// =============================================
+// SECTIONS
+// =============================================
+const SECTIONS = {
+
+// -------- 1. WHY AI --------
+why: {
+  title: "Why AI for Your Work",
+  sub: "And Why Right Now",
+  content: (ctx) => `
+<p>${ctx === 'nonprofit' ? 'If you work at a nonprofit, you already know the reality: too many tasks, not enough staff, and every dollar matters.' : ctx === 'business' ? 'Running a small business means wearing every hat. AI changes that equation.' : 'You already juggle more than one person should. AI gives you a capable assistant who never takes a day off.'} AI acts like a smart assistant who never takes a day off &mdash; one that can draft your emails, write your reports, analyze your data, build your presentations, and create your social media content.</p>
+<h3>What AI Can Do for You Right Now</h3>
+<ul>
+  <li>Draft ${ctx === 'nonprofit' ? 'donor thank-you emails' : ctx === 'business' ? 'client follow-up emails' : 'professional emails'} in 30 seconds instead of 30 minutes</li>
+  <li>Write first drafts of ${ctx === 'nonprofit' ? 'grant narratives from your program data' : ctx === 'business' ? 'proposals and pitches from your notes' : 'cover letters, reports, or blog posts'}</li>
+  <li>Summarize 50-email threads into 3 clear bullet points</li>
+  <li>Turn a ${ctx === 'nonprofit' ? 'board report' : ctx === 'business' ? 'quarterly report' : 'research document'} into a presentation in under 2 minutes</li>
+  <li>Create a full week of social media posts from a single update</li>
+  <li>Analyze your ${ctx === 'nonprofit' ? 'budget spreadsheet and flag items over budget' : ctx === 'business' ? 'sales data and spot trends' : 'personal finances or project data'}</li>
+  <li>Build ${ctx === 'nonprofit' ? 'event registration forms, surveys, and feedback tools' : 'forms, surveys, and intake documents'} instantly</li>
+</ul>
+<h3>The Real Impact: Time and Capacity</h3>
+<p>People who learn to work with AI typically save 5 to 10 hours per week on routine tasks. ${ctx === 'nonprofit' ? 'For a nonprofit with 10 staff members, that\'s the equivalent of hiring one to two additional full-time employees &mdash; at no additional cost.' : ctx === 'business' ? 'For a small business, that\'s like hiring a part-time employee at zero cost.' : 'That\'s an extra workday every single week.'} The organizations that adopt AI now will have an unfair advantage.</p>
+<div class="callout"><strong>The Bottom Line:</strong> AI isn't a toy. It's a force multiplier for ${ctx === 'nonprofit' ? 'organizations that need to do more with less' : 'people who need results without adding headcount'}. One person working with AI can produce the output of three.</div>
+`},
+
+// -------- 2. HOW TO COMMUNICATE WITH AI --------
+communicate: {
+  title: "How to Communicate with AI",
+  sub: "The Complete Guide to Getting Great Results Every Time",
+  content: (ctx) => `
+<p>This is the most important section in this entire guide. Everything else &mdash; the prompts, the tools, the templates &mdash; depends on how well you communicate with AI. Most people talk to AI the wrong way: they type vague questions and get vague answers. This section teaches you the skill that changes everything.</p>
+
+<h3>The Core Principle: Direct, Clear, Specific</h3>
+<p>AI doesn't need "please" and "thank you." It needs clarity. Think of it like giving instructions to a very capable new hire on their first day &mdash; direct, specific, and action-oriented. The more specific you are, the better the output.</p>
+<p><strong>Instead of this:</strong></p>
+${prompt('Can you maybe help me write something for our upcoming event? I think we need a flyer or something.')}
+<p><strong>Say this:</strong></p>
+${prompt(`Write a one-page event flyer for our ${ctx === 'nonprofit' ? 'Community Health Fair on June 14 at Riverside Park. Include: free screenings, healthy cooking demo, kids zone, and resource tables.' : ctx === 'business' ? 'Client Appreciation Event on June 14 at our downtown office. Include: networking, refreshments, a keynote, and RSVP details.' : 'Birthday Party on June 14 at Riverside Park. Include: time, activities, what to bring, and RSVP details.'} Tone: warm and inviting. Include a clear call to action.`)}
+
+<h3>The 5-Part Prompt Formula</h3>
+<p>Every time you talk to AI, think of your prompt as having five parts. You won't always need all five, but the more you include, the better your results. This formula works with every AI tool.</p>
+<table class="data-table">
+  <tr><th>Part</th><th>What It Does</th><th>Example</th></tr>
+  <tr><td><strong>1. Role</strong></td><td>Tell AI WHO it is</td><td>"You are a ${ctx === 'nonprofit' ? 'grant writer for a community health nonprofit' : ctx === 'business' ? 'marketing strategist for a small business' : 'professional writing assistant'}."</td></tr>
+  <tr><td><strong>2. Context</strong></td><td>Give it the background</td><td>"${ctx === 'nonprofit' ? 'We serve 15,000 residents in rural counties with limited access to care.' : ctx === 'business' ? 'We are a 12-person consulting firm specializing in IT services.' : 'I am preparing for a job interview at a tech company.'}"</td></tr>
+  <tr><td><strong>3. Task</strong></td><td>Tell it exactly WHAT to do</td><td>"${ctx === 'nonprofit' ? 'Write a 300-word program narrative for our CDC grant application.' : ctx === 'business' ? 'Write a 200-word proposal introduction for a new client.' : 'Write a tailored cover letter for this job posting.'}"</td></tr>
+  <tr><td><strong>4. Format</strong></td><td>Tell it HOW to deliver it</td><td>"Use short paragraphs. Include 2 data points. End with ${ctx === 'nonprofit' ? 'the ask' : 'a call to action'}."</td></tr>
+  <tr><td><strong>5. Constraints</strong></td><td>Set the guardrails</td><td>"Do not use jargon. Write at an 8th-grade reading level."</td></tr>
+</table>
+
+<h4>Full 5-Part Prompt Example</h4>
+${prompt(ctx === 'nonprofit' ?
+`You are a grant writer for a community health nonprofit.
+
+Context: Our organization serves 15,000 residents across 3 rural counties in Connecticut. We operate 4 mobile health clinics and employ 12 community health workers. Last year we conducted 4,200 health screenings.
+
+Task: Write a 400-word program narrative for our HRSA Community Health Worker grant application. Cover: community need, program design, staffing model, and expected outcomes for Year 1.
+
+Format: Use short paragraphs (3-4 sentences each). Include at least 3 data points. End with a strong closing statement about sustainability.
+
+Constraints: No jargon. Write at an 8th-grade reading level. Do not use passive voice. Do not exceed 400 words.`
+: ctx === 'business' ?
+`You are a business development strategist for a small IT consulting firm.
+
+Context: We are a 12-person firm based in Hartford, CT. We specialize in managed IT services, cybersecurity assessments, and cloud migration for small-to-midsize businesses. Our average client contract is $36,000/year.
+
+Task: Write a 300-word proposal introduction for a prospective client (a 50-person law firm) that positions us as the right IT partner for their growth.
+
+Format: Open with a hook about the cost of IT downtime for law firms. Follow with our relevant experience. End with a specific next step (discovery call).
+
+Constraints: No technical jargon. Professional but not stiff. Under 300 words.`
+:
+`You are a professional career coach and writing assistant.
+
+Context: I am a marketing coordinator with 4 years of experience at a nonprofit. I am applying for a Senior Marketing Manager role at a mid-size tech company. I have experience in campaign management, social media strategy, and email marketing.
+
+Task: Write a tailored cover letter for this role that highlights my transferable skills and shows I can handle the step up.
+
+Format: 3 paragraphs. Opening hook, experience match, and confident close with a specific ask for an interview.
+
+Constraints: Under 300 words. No generic filler like "I am excited to apply." Sound confident, not desperate.`)}
+
+<h3>Grounding: Give AI Something to Work With</h3>
+<p>One of the most powerful techniques is <strong>grounding</strong> &mdash; giving AI a reference to build from instead of asking it to create from scratch. When you provide real data, old documents, or examples, the output jumps from "generic" to "useful" instantly.</p>
+${prompt(`Based on last year's version I'm pasting below, create an updated version for 2026. Keep the same structure and tone, but update the numbers and add the new ${ctx === 'nonprofit' ? 'CHW training program' : ctx === 'business' ? 'cloud migration service' : 'freelance project'} we launched in March.
+
+[Paste your previous document here]`)}
+${prompt(`Here is the ${ctx === 'nonprofit' ? 'funder\'s' : 'client\'s'} original email. Write a response that addresses every question they raised, in the same order. Tone: professional and thorough.
+
+[Paste the email here]`)}
+
+<h3>Iteration: Your First Draft Is Never Final</h3>
+<p>Professional AI users never accept the first output. They refine. Give feedback, ask for changes, push for better. Think of it as a conversation, not a single request.</p>
+${prompt('Make the opening sentence shorter and more urgent.')}
+${prompt('Remove the jargon. Replace technical terms with plain language a community member would understand.')}
+${prompt('Add a personal story. Use this anecdote: [paste your anecdote].')}
+${prompt('This is too long. Cut it to 250 words without losing the three data points.')}
+${prompt('The tone is too formal. Rewrite it like I\'m talking to a colleague I respect, not writing a textbook.')}
+
+<h3>Conversation Techniques: Advanced Moves</h3>
+<p>Once you have the basics, these techniques take your results to the next level:</p>
+<table class="data-table">
+  <tr><th>Technique</th><th>How to Use It</th><th>Example</th></tr>
+  <tr><td><strong>Chain prompting</strong></td><td>Break complex tasks into steps</td><td>"First, outline the main points. Then I'll tell you which to expand."</td></tr>
+  <tr><td><strong>Persona stacking</strong></td><td>Ask AI to evaluate its own work</td><td>"Now review this as a skeptical ${ctx === 'nonprofit' ? 'grant reviewer' : ctx === 'business' ? 'client' : 'hiring manager'}. What's weak?"</td></tr>
+  <tr><td><strong>Example seeding</strong></td><td>Show AI what "good" looks like</td><td>"Here's a ${ctx === 'nonprofit' ? 'donor email' : 'proposal'} I wrote that got great results. Write new ones in this style."</td></tr>
+  <tr><td><strong>Constraint tightening</strong></td><td>Force AI to be specific</td><td>"Every sentence must contain a number, a name, or a specific result."</td></tr>
+  <tr><td><strong>Audience shifting</strong></td><td>Repurpose for different readers</td><td>"Rewrite this for a ${ctx === 'nonprofit' ? 'community audience instead of funders' : ctx === 'business' ? 'C-suite audience instead of managers' : 'non-technical audience instead of developers'}."</td></tr>
+</table>
+
+<h3>Voice Input: Talk to Your AI Instead of Typing</h3>
+<p><strong>Talking to AI produces better results than typing.</strong> When you speak, you naturally give more context, more detail, and more nuance. You explain things the way you'd explain them to a colleague &mdash; which is exactly how AI works best.</p>
+<ul>
+  <li><strong>More detail, naturally:</strong> When typing, people shortcut. When speaking, you add the context AI needs.</li>
+  <li><strong>Faster input:</strong> Most people speak 3-4x faster than they type.</li>
+  <li><strong>Better tone control:</strong> Speaking naturally helps AI match your voice.</li>
+</ul>
+
+<div class="voice-tools-grid">
+  <div class="voice-card">
+    <h4>Wispr Flow</h4>
+    <p><strong>Best for:</strong> Dictating into any app on your computer</p>
+    <p>Runs on Mac, Windows, iOS, Android. Removes filler words, auto-corrects, adds punctuation. HIPAA-ready. SOC 2 Type II on Enterprise.</p>
+  </div>
+  <div class="voice-card">
+    <h4>Built-In AI Voice Modes</h4>
+    <p><strong>Best for:</strong> Conversational back-and-forth with AI</p>
+    <p>ChatGPT, Claude, and Gemini all have voice modes. Have a real conversation &mdash; speak your question, hear the answer, follow up naturally.</p>
+  </div>
+  <div class="voice-card">
+    <h4>System Dictation</h4>
+    <p><strong>Best for:</strong> Quick voice input without installing anything</p>
+    <p>Mac: press Fn twice. Windows: Win+H. iPhone/Android: tap the mic icon. Free, built into your OS.</p>
+  </div>
+  <div class="voice-card">
+    <h4>Voice + The 5-Part Formula</h4>
+    <p><strong>Best for:</strong> Maximum quality from AI</p>
+    <p>Speak the full formula aloud: Role, Context, Task, Format, Constraints. You naturally flesh out each part with richer detail when speaking.</p>
+  </div>
+</div>
+
+<div class="callout"><strong>Try This Now:</strong> Instead of typing "write me a follow-up email," speak this: "I just had a great meeting with ${ctx === 'nonprofit' ? 'Sarah from the health department. She\'s interested in partnering on our diabetes prevention program. Write a follow-up that references our CHW model and suggests a next meeting in two weeks.' : ctx === 'business' ? 'the IT director at Riverside Medical. They want a proposal for managed services. Write a follow-up that references their concern about downtime and suggests a discovery call Friday.' : 'the hiring manager for the marketing role. It went really well and we connected over the brand strategy question. Write a thank-you email that references that conversation and reiterates my interest.'}" That extra context makes the output 10x better.</div>
+
+<div class="tip"><strong>Power Move:</strong> Record a voice memo after every meeting. Paste the transcription into AI: "Here are my raw meeting notes. Pull out the action items, summarize decisions, and draft a follow-up email." Meeting documentation in 60 seconds.</div>
+`},
+
+// -------- 3. CHOOSING A TOOL --------
+tools: {
+  title: "Choosing the Right AI Tool",
+  sub: "Pick the One That Fits Your Workflow",
+  content: (ctx) => `
+<p>There is no single "best" AI tool. The right choice depends on your budget, the software you already use, and how sensitive your data is.</p>
+<table class="data-table">
+  <tr><th>Tool</th><th>Best For</th><th>Works With</th><th>Cost</th></tr>
+  <tr><td><strong>Microsoft Copilot</strong></td><td>Organizations on Microsoft 365</td><td>Outlook, Word, Excel, Teams, PowerPoint</td><td>Included or add-on with M365</td></tr>
+  <tr><td><strong>ChatGPT (OpenAI)</strong></td><td>General writing, research, brainstorming</td><td>Standalone web/app; plugins</td><td>Free tier; Plus ~$20/mo</td></tr>
+  <tr><td><strong>Google Gemini</strong></td><td>Organizations on Google Workspace</td><td>Gmail, Docs, Sheets, Slides, Meet</td><td>Included or add-on</td></tr>
+  <tr><td><strong>Claude (Anthropic)</strong></td><td>Long documents, nuanced writing, analysis</td><td>Standalone web/app; API</td><td>Free tier; Pro ~$20/mo</td></tr>
+</table>
+<h3>Our Recommendation</h3>
+<p>${ctx === 'nonprofit' ? 'If your organization already uses Microsoft 365 (Outlook, Word, Excel, Teams), Microsoft Copilot is the strongest starting point because it lives inside the tools you already pay for and keeps your data within your secure Microsoft environment.' : 'Pick the tool that works with whatever you already use daily.'} But every prompt in this guide works with any AI tool &mdash; just paste it into whichever assistant you use.</p>
+<div class="callout"><strong>Important:</strong> The prompts in this guide are tool-agnostic. Whether you type them into ChatGPT, Copilot, Gemini, or Claude, they will produce strong results. The 5-Part Formula works everywhere because it's about how you communicate, not which tool you use.</div>
+`},
+
+// -------- 4. PROMPT LIBRARY --------
+prompts: {
+  title: "Prompt Library",
+  sub: "Ready-to-Use Prompts for Every Task",
+  content: (ctx) => {
+    const emailContent = `
+<h4>${ctx === 'nonprofit' ? 'Donor Thank-You' : ctx === 'business' ? 'Client Thank-You' : 'Professional Thank-You'}</h4>
+${prompt(`Draft a thank-you email to ${ctx === 'nonprofit' ? 'a donor who gave $5,000 to our summer youth program. Mention the impact: 120 kids served, 3 new field trips added.' : ctx === 'business' ? 'a client who just signed a $10,000 annual contract. Mention: dedicated account manager, onboarding call this week.' : 'someone who referred me for a job opportunity. Mention: I got the interview, it went well.'} Tone: warm and personal, not corporate. Keep it under 200 words.`)}
+<h4>Event Invitation</h4>
+${prompt(`Write an invitation email for our ${ctx === 'nonprofit' ? 'Annual Community Gala on September 20 at the Grand Ballroom. Tickets are $150. Keynote speaker is Dr. Maria Santos.' : ctx === 'business' ? 'Client Appreciation Dinner on September 20 at The Metropolitan Club. Cocktails at 6, dinner at 7.' : 'Housewarming Party on September 20 at our new apartment. Potluck style, starts at 5 PM.'} Include RSVP link placeholder. Tone: celebratory and inclusive.`)}
+<h4>Follow-Up After a Meeting</h4>
+${prompt('Draft a follow-up email after a meeting with [Name]. Summarize three action items we discussed. Assign deadlines: items 1 and 2 by Friday, item 3 by end of month. Tone: professional but friendly.')}
+<h4>Cold Outreach</h4>
+${prompt(`Write an outreach email to ${ctx === 'nonprofit' ? 'the director of [Organization] introducing our work. We want to explore a partnership around youth mentoring in [County].' : ctx === 'business' ? 'a potential client at [Company]. We want to introduce our services and propose a discovery call.' : 'a professional contact at [Company]. I want to explore collaboration opportunities.'} Keep it under 150 words. End with a specific ask: a 20-minute introductory call next week.`)}
+<h4>Summarize and Manage Email</h4>
+${prompt('Summarize this email thread. Give me the key decisions, any open questions, and who owes what.')}
+${prompt('I have 30 unread emails. Prioritize them: which ones need a response today?')}`;
+
+    const docsContent = `
+${ctx === 'nonprofit' ? `
+<h4>Grant Narrative</h4>
+${prompt('Write a 500-word program narrative for a CDC Community Health Worker grant. Our organization: [Name], serving [County]. Program: training 20 CHWs to provide diabetes prevention education in underserved communities. Include: need statement, program design, expected outcomes. Write in active voice.')}
+<h4>Rewriting to Meet Word Limits</h4>
+${prompt('This section is 800 words. The funder requires 500 words max. Shorten it without losing the data points or the personal story in paragraph 2.')}
+<h4>Repurposing Old Grant Language</h4>
+${prompt('Here is our program narrative from our 2024 HRSA application. Rewrite it for a 2026 CDC application. Update the data, adjust the framing for a CDC audience, and keep it under 600 words.')}` : ctx === 'business' ? `
+<h4>Proposal Introduction</h4>
+${prompt('Write a 1-page project proposal for [Client]. Services: website redesign, SEO setup, and 3 months of content. Include scope, timeline (8 weeks), and pricing placeholder. Tone: confident and professional.')}
+<h4>Executive Summary</h4>
+${prompt('This proposal is 4 pages. Shorten it to a 1-page executive summary. Keep the pricing, timeline, and 3 biggest selling points.')}` : `
+<h4>Cover Letter</h4>
+${prompt('Write a 300-word cover letter for a [Job Title] position at [Company]. My background: [brief experience]. Tone: confident, specific, no generic filler.')}
+<h4>Resume Bullets</h4>
+${prompt('Rewrite these job responsibilities as achievement-oriented resume bullets. Use numbers and results where possible.')}`}
+<h4>${ctx === 'nonprofit' ? 'Board Report' : 'Quarterly Report'}</h4>
+${prompt(`Create a 2-page ${ctx === 'nonprofit' ? 'quarterly board report for Q1 2026. Structure: Executive Summary (3 sentences), Program Highlights (bullet points), Financial Snapshot, Challenges, and Next Quarter Priorities.' : 'quarterly summary report. Structure: Executive Summary, Key Wins, Financials, Challenges, Next Quarter Priorities.'} Tone: confident and transparent.`)}
+<h4>Editing and Refining</h4>
+${prompt('Review this document for passive voice. Rewrite any passive sentences in active voice.')}
+${prompt('Make this sound more confident. Remove hedging language like "we hope to" and "we aim to." Replace with "we will" and "our program delivers."')}`;
+
+    const spreadsheetsContent = `
+<h4>${ctx === 'nonprofit' ? 'Budget Template' : ctx === 'business' ? 'Financial Tracking' : 'Personal Budget'}</h4>
+${prompt(`Create a 12-month ${ctx === 'nonprofit' ? 'program budget template with these line items: Personnel, Fringe, Travel, Supplies, Contractual, Indirect Costs.' : ctx === 'business' ? 'business budget template with: Revenue, COGS, Payroll, Marketing, Rent, Software, Misc.' : 'personal budget template with: Income, Rent, Utilities, Food, Transport, Savings, Misc.'} Add formulas for monthly totals and a grand total row. Include a Budget vs. Actual variance column.`)}
+<h4>Data Analysis</h4>
+${prompt(`Analyze this ${ctx === 'nonprofit' ? 'budget' : 'financial'} data. Which line items are over budget? By how much? Give me a summary I can share with my ${ctx === 'nonprofit' ? 'finance committee' : 'team'}.`)}
+<h4>${ctx === 'nonprofit' ? 'Donor Data' : ctx === 'business' ? 'Client Data' : 'Personal Tracking'}</h4>
+${prompt(ctx === 'nonprofit' ? 'Sort this donor list by total giving amount, highest to lowest. Flag anyone who gave last year but hasn\'t given this year &mdash; those are lapsed donors I need to re-engage.' : ctx === 'business' ? 'Sort this client list by revenue, highest to lowest. Flag anyone who hasn\'t purchased in 6 months &mdash; those are at-risk accounts.' : 'Organize this data by date. Calculate totals by month and show me the trend.')}
+${prompt('Calculate the average, median, and range for the scores in this column. Tell me if there are any outliers.')}`;
+
+    const meetingsContent = `
+<h4>Meeting Summary</h4>
+${prompt('Summarize this meeting in 5 bullet points. Include decisions made and next steps.')}
+${prompt('List all the action items mentioned, and who they were assigned to.')}
+${prompt('What questions are still unresolved from this discussion?')}
+<h4>Follow-Up Communications</h4>
+${prompt('Draft a follow-up email to all attendees with the meeting summary and action items. Include deadlines.')}
+${prompt('Based on these meeting notes, create an agenda for our follow-up meeting next week.')}
+<h4>Meeting Preparation</h4>
+${prompt(`I have a meeting with [${ctx === 'nonprofit' ? 'Funder' : 'Client'} Name] tomorrow. Here are our last 3 email exchanges. Summarize what we need to discuss and suggest 3 talking points.`)}`;
+
+    const presentationsContent = `
+<h4>Creating from Scratch</h4>
+${prompt(`Create a 10-slide presentation outline for our ${ctx === 'nonprofit' ? 'annual funder meeting. Structure: Title, Mission and impact overview, Program highlights with data (3 slides), Client success story, Financial summary, Challenges and lessons learned, Next year priorities, Thank you with contact info.' : ctx === 'business' ? 'quarterly client review. Structure: Title, Executive summary, Revenue highlights, Project milestones (3 slides), Client feedback, Challenges, Next quarter roadmap, Contact info.' : 'project presentation. Structure: Title, Problem statement, Research/context, Solution (3 slides), Results, Lessons learned, Next steps, Q&A.'} Include speaker notes for each slide.`)}
+<h4>Creating from Existing Documents</h4>
+${prompt(`Turn this ${ctx === 'nonprofit' ? 'board report' : 'report'} into an 8-slide presentation. Keep the data, simplify the language, and add speaker notes.`)}
+<h4>Refining Slides</h4>
+${prompt('This slide has too much text. Break it into 3 slides with one key point each.')}
+${prompt('Add speaker notes to every slide explaining what to say beyond what\'s written.')}`;
+
+    const socialContent = `
+<h4>Instagram and Facebook</h4>
+${prompt(`Write 3 Instagram caption options for a photo of our ${ctx === 'nonprofit' ? 'community health fair. Mention: free screenings, 400 attendees, 12 partner organizations.' : ctx === 'business' ? 'team at a client event. Mention: partnership, collaboration, results.' : 'recent project. Mention: what I built, what I learned.'} Tone: proud and ${ctx === 'nonprofit' ? 'community-focused' : 'authentic'}. Include 5 relevant hashtags.`)}
+<h4>LinkedIn</h4>
+${prompt(`Draft a LinkedIn post announcing our ${ctx === 'nonprofit' ? 'new partnership with [Organization]' : ctx === 'business' ? 'newest service offering' : 'career milestone'}. Tone: professional and proud. Keep it under 150 words. End with a call to action.`)}
+<h4>Batch Content Creation</h4>
+${prompt(`Create a full week of social media posts (Monday through Friday) promoting our ${ctx === 'nonprofit' ? 'Community Health Workshop series. Each day: nutrition, mental health, exercise, preventive care, wrap-up with registration link.' : ctx === 'business' ? 'upcoming product launch. Each day highlights a different feature or benefit.' : 'personal brand. Each day: Monday motivation, tip, behind-the-scenes, industry insight, week recap.'} Platform: Instagram. Include captions and hashtags.`)}
+<h4>Repurposing Content</h4>
+${prompt('Take this 500-word update and create: one Instagram caption, one LinkedIn post, one Facebook post, and one email newsletter paragraph.')}`;
+
+    const tasksContent = `
+<h4>Creating Task Lists</h4>
+${prompt(`Create a task list for our ${ctx === 'nonprofit' ? 'upcoming Community Health Fair. Include: venue confirmation, vendor outreach, flyer design, volunteer recruitment, supply ordering, day-of logistics, and post-event report.' : ctx === 'business' ? 'upcoming client launch. Include: kickoff meeting, asset collection, first draft, revisions, final approval, go-live, post-launch review.' : 'apartment move. Include: packing schedule, utility transfers, address changes, cleaning, move day logistics.'} Add due dates starting 8 weeks out.`)}
+<h4>Extracting Tasks from Meetings and Emails</h4>
+${prompt('Here are my meeting notes and key emails from this week. Pull out every commitment I made or task assigned to me. Organize by deadline.')}
+<h4>Prioritizing</h4>
+${prompt('Here is my current task list. What are the 3 most important things I should focus on today based on deadlines and impact?')}
+${prompt('I\'m overwhelmed. Organize these tasks into: Must Do Today, Must Do This Week, and Can Wait.')}`;
+
+    const strategyContent = `
+<h4>Brainstorming Ideas</h4>
+${prompt(ctx === 'nonprofit' ? 'Give me 10 creative fundraising ideas for a small community nonprofit with a $5,000 budget. We serve families in rural areas. Focus on ideas that build community engagement, not just raise money.' : ctx === 'business' ? 'Give me 10 marketing ideas for a small IT consulting firm with a $3,000 monthly budget. Target audience: small business owners who don\'t have an IT department. Focus on ideas that generate leads.' : 'Give me 10 side project ideas I could build in my spare time that use my skills in [your skills]. Focus on projects that could generate passive income or build my portfolio.')}
+<h4>Strategic Analysis</h4>
+${prompt(ctx === 'nonprofit' ? 'Here is our program data from the last 3 years. What trends do you see? What should we double down on? What should we consider cutting? Be direct.' : ctx === 'business' ? 'Here are my revenue numbers by service line for the last 2 years. What trends do you see? Which services should I invest in? Which are declining?' : 'Here is my career history and current skills. What roles am I best positioned for in 2026? What skills should I develop next?')}
+<h4>Problem Solving</h4>
+${prompt(ctx === 'nonprofit' ? 'Our volunteer retention rate dropped from 60% to 35% this year. Here\'s what we know about our volunteer program: [paste details]. What could be causing this? Give me 5 specific things to investigate and 3 quick fixes to try this month.' : ctx === 'business' ? 'Our client churn rate increased from 8% to 15% this quarter. Here\'s what we know: [paste details]. What could be causing this? Give me 5 things to investigate and 3 retention strategies to try immediately.' : 'I\'ve been applying to jobs for 3 months with no callbacks. Here\'s my resume and typical cover letter approach: [paste]. What am I doing wrong? Give me specific, actionable fixes.')}`;
+
+    return `
+<p>Click any category below to expand ready-to-paste prompts tailored to your needs. Every prompt uses the 5-Part Formula and works with any AI tool.</p>
+
+${accordion('Email &mdash; Write Better, Respond Faster', emailContent, 6)}
+${accordion('Documents &mdash; Reports, Proposals & Letters', docsContent, ctx === 'nonprofit' ? 8 : 6)}
+${accordion('Spreadsheets &mdash; Budgets, Data & Tracking', spreadsheetsContent, 4)}
+${accordion('Meetings &mdash; Notes, Follow-Ups & Agendas', meetingsContent, 6)}
+${accordion('Presentations &mdash; Decks That Build Themselves', presentationsContent, 4)}
+${accordion('Social Media &mdash; Content That Connects', socialContent, 5)}
+${accordion('Task Management &mdash; Stay on Top of Everything', tasksContent, 4)}
+${accordion('Brainstorming & Strategy &mdash; Think Bigger', strategyContent, 3)}
+
+<div class="tip"><strong>Pro Tip:</strong> Bookmark this page. When you need a prompt, come back, click the category, copy it, paste it into your AI tool, and customize the [bracketed] parts with your real information.</div>
+`;
+  }
+},
+
+// -------- 5. BUILDING SKILLS --------
+skills: {
+  title: "Building AI Skills",
+  sub: "Teach AI Your Repeatable Workflows",
+  content: (ctx) => `
+<p>A "skill" is a repeatable instruction set that teaches AI to perform a specific task the same way every time. Instead of re-explaining what you want in every conversation, you create a skill once and reuse it.</p>
+<h3>Example: The Weekly ${ctx === 'nonprofit' ? 'Board Update' : ctx === 'business' ? 'Client Report' : 'Status Update'} Skill</h3>
+${prompt(`SKILL: Weekly ${ctx === 'nonprofit' ? 'Board Update' : ctx === 'business' ? 'Client Report' : 'Status Update'}
+
+ROLE: You are the ${ctx === 'nonprofit' ? 'communications director for a community health nonprofit' : ctx === 'business' ? 'account manager for a consulting firm' : 'project lead'}.
+
+TASK: Create a one-page ${ctx === 'nonprofit' ? 'board update email' : 'status update'}.
+
+STRUCTURE:
+- Opening: One sentence on the week's biggest win
+- ${ctx === 'nonprofit' ? 'Programs' : 'Projects'}: 3 bullet points on activity
+- ${ctx === 'nonprofit' ? 'Finance' : 'Budget'}: One line on budget status
+- Upcoming: 2-3 items for next week
+- Close: One sentence of appreciation
+
+TONE: Professional, optimistic, transparent.
+LENGTH: Under 300 words.`)}
+
+<h3>How to Build Your Own Skills</h3>
+<p><strong>Step 1:</strong> Identify a task you do repeatedly (weekly updates, thank-you emails, report summaries)</p>
+<p><strong>Step 2:</strong> Write out exactly how you want it done &mdash; structure, tone, length, what to include</p>
+<p><strong>Step 3:</strong> Save it in a document you can quickly access</p>
+<p><strong>Step 4:</strong> Paste it into any AI conversation when you need that task done</p>
+<p><strong>Step 5:</strong> Refine after each use &mdash; update the skill with improvements</p>
+
+<h3>Starter Skills to Build</h3>
+<table class="data-table">
+  <tr><th>Skill Name</th><th>What It Does</th><th>Use With</th></tr>
+  <tr><td>${ctx === 'nonprofit' ? 'Donor Thank-You' : 'Client Thank-You'}</td><td>Writes personalized thank-you emails</td><td>Email</td></tr>
+  <tr><td>${ctx === 'nonprofit' ? 'Grant Narrative' : 'Proposal Draft'}</td><td>Drafts ${ctx === 'nonprofit' ? 'program narratives' : 'proposals'} with required sections</td><td>Documents</td></tr>
+  <tr><td>Weekly Update</td><td>Creates weekly summary emails</td><td>Email + Docs</td></tr>
+  <tr><td>Meeting Recap</td><td>Summarizes any meeting into decisions + actions</td><td>Meetings</td></tr>
+  <tr><td>Social Media Post</td><td>Drafts platform-specific posts from updates</td><td>Social Media</td></tr>
+  <tr><td>Budget Analyzer</td><td>Flags over-budget items and creates reports</td><td>Spreadsheets</td></tr>
+</table>
+`},
+
+// -------- 6. TOOLS & DATA PROTECTION --------
+protection: {
+  title: "Tools & Data Protection",
+  sub: "Keep Sensitive Information Safe When Using AI",
+  content: (ctx) => `
+<p>${ctx === 'nonprofit' ? 'If your nonprofit handles health information, client records, or any sensitive data, this section matters most.' : ctx === 'business' ? 'Your business handles client data, financial records, contracts, and proprietary information every day. Before you paste anything into AI, you need to understand what\'s at risk.' : 'You probably share more personal data than you realize. Before you paste anything into AI, understand the risks.'} Not all AI tools are equal when it comes to privacy.</p>
+
+${ctx === 'nonprofit' ? `
+<h3>Understanding PHI and BAAs</h3>
+<p><strong>Protected Health Information (PHI)</strong> is any information about a person's health status, care, or payment that can be linked to a specific individual. A <strong>Business Associate Agreement (BAA)</strong> is a legal contract with any vendor handling your PHI.</p>
+<h3>What Counts as Sensitive Data</h3>
+<ul>
+  <li><strong>PHI:</strong> Names + health conditions, treatment info, insurance details, medical record numbers</li>
+  <li><strong>PII:</strong> Social Security numbers, dates of birth, addresses, phone numbers linked to individuals</li>
+  <li><strong>Financial:</strong> Donor bank details, EIN numbers, payroll data, grant account numbers</li>
+  <li><strong>Program Data:</strong> Client intake forms, case notes, assessment scores linked to names</li>
+</ul>` : ctx === 'business' ? `
+<h3>What's at Risk: Business Data</h3>
+<p>Before pasting anything into AI, ask: "If a stranger saw this, could it hurt my business or my clients?"</p>
+<ul>
+  <li><strong>Client Financial Data:</strong> Invoice amounts, payment details, bank account info, pricing agreements</li>
+  <li><strong>Contracts and Proposals:</strong> Pricing structures, negotiation terms, proprietary service details</li>
+  <li><strong>Employee Information:</strong> Payroll, SSNs, performance reviews, salary data, tax forms</li>
+  <li><strong>Business Financials:</strong> Revenue figures, profit margins, tax returns, bank statements</li>
+  <li><strong>Client PII:</strong> Names + contact details, account numbers, purchase history</li>
+</ul>
+<div class="callout"><strong>Real Scenario:</strong> A freelancer pastes a client invoice into ChatGPT Free to "reformat it." That invoice &mdash; with the client's name, address, and payment details &mdash; entered a training dataset. The client finds out. Trust gone. Contract gone.</div>` : `
+<h3>What's at Risk: Your Personal Data</h3>
+<p>When you paste text into an AI tool, you may be sharing more than you think:</p>
+<ul>
+  <li><strong>Financial Information:</strong> Bank account numbers, credit card details, tax return data</li>
+  <li><strong>Health Information:</strong> Medical conditions, prescriptions, insurance details</li>
+  <li><strong>Identity Data:</strong> Social Security number, driver's license, passport number</li>
+  <li><strong>Personal Communications:</strong> Private messages, legal documents, family matters</li>
+</ul>
+<div class="callout"><strong>Real Scenario:</strong> You paste your medical records into free ChatGPT to "summarize for my doctor." That text &mdash; your name, diagnosis, medications, insurance ID &mdash; may now be in a training dataset. It can't be un-shared.</div>`}
+
+<h3>AI Tools and Data Safety</h3>
+<table class="data-table">
+  <tr><th>Feature</th><th>Microsoft Copilot (M365)</th><th>ChatGPT</th><th>Google Gemini</th><th>Claude</th></tr>
+  <tr><td><strong>Signs BAAs</strong></td><td>Yes (enterprise)</td><td>Enterprise only</td><td>Yes (enterprise)</td><td>Team/Enterprise</td></tr>
+  <tr><td><strong>Data stays private</strong></td><td>Yes</td><td>No (unless Enterprise)</td><td>Yes (Workspace)</td><td>No (unless Enterprise)</td></tr>
+  <tr><td><strong>Data trains models</strong></td><td>No</td><td>Yes (free) / No (paid)</td><td>Varies</td><td>No</td></tr>
+  <tr><td><strong>HIPAA eligible</strong></td><td>Yes</td><td>Enterprise only</td><td>Enterprise only</td><td>Enterprise only</td></tr>
+</table>
+
+<h3>The Golden Rules of AI Data Safety</h3>
+<ul>
+  <li><strong>Rule 1:</strong> Never paste ${ctx === 'nonprofit' ? 'client names, health details, or identifiable information' : ctx === 'business' ? 'client names with financial details, contracts, or employee records' : 'real names with financial details, health records, or government IDs'} into a free AI tool.</li>
+  <li><strong>Rule 2:</strong> ${ctx === 'nonprofit' ? 'Use enterprise-tier AI with a signed BAA, or use AI only for non-sensitive tasks.' : 'Use paid AI tiers that don\'t train on your data, or strip sensitive details before pasting.'}</li>
+  <li><strong>Rule 3:</strong> When in doubt, <strong>tokenize first</strong> &mdash; replace real names and numbers with placeholders before giving text to AI.</li>
+  <li><strong>Rule 4:</strong> ${ctx === 'nonprofit' ? 'Confirm with your IT administrator that a BAA is in place before using AI with any client data.' : 'Review your AI provider\'s privacy policy. If it says "we may use your content to improve our services," your data is being used for training.'}</li>
+</ul>
+
+<hr class="divider">
+<h3 id="tokenizer-anchor">Tokenization: Your First Line of Defense</h3>
+<p>Tokenization means replacing sensitive information with harmless placeholders before you send text to AI. You get the same quality output &mdash; then swap the real data back in afterward.</p>
+<p><strong>Before:</strong> "Maria Santos, DOB 03/15/1978, was diagnosed with Type 2 diabetes at Hartford General. Insurance ID: BC-4492817."</p>
+<p><strong>After:</strong> "[PERSON_1], DOB [DATE_1], was diagnosed with [CONDITION_1] at [FACILITY_1]. Insurance ID: [ID_1]."</p>
+
+<div class="method-toggle">
+  <button class="active" onclick="toggleMethod('tool',this)">Interactive Tokenizer</button>
+  <button onclick="toggleMethod('purview',this)">Microsoft Purview</button>
+  <button onclick="toggleMethod('word',this)">Word Document Inspector</button>
+</div>
+
+<div class="method-panel visible" id="method-tool">
+<div class="tokenizer-tool">
+  <h4>Data Tokenizer &mdash; Replace Sensitive Data Instantly</h4>
+  <p style="font-size:0.85rem;color:var(--mid);margin-bottom:0.75rem;">Paste your text below, select data types to redact, and click Tokenize. Copy the safe version to paste into any AI tool.</p>
+  <textarea id="tokenizer-input" placeholder="Paste text containing sensitive information here...&#10;&#10;Example: Maria Santos (DOB 03/15/1978) at 42 Oak Street, Hartford CT 06106 was diagnosed with Type 2 diabetes. Her SSN is 078-05-1120 and insurance ID is BC-4492817. Account balance: $12,450.00. Contact: maria.santos@email.com or 860-555-0142."></textarea>
+  <div class="token-options">
+    <label><input type="checkbox" id="tok-names" checked> Names</label>
+    <label><input type="checkbox" id="tok-dates" checked> Dates / DOB</label>
+    <label><input type="checkbox" id="tok-ssn" checked> SSN / Gov IDs</label>
+    <label><input type="checkbox" id="tok-medical" checked> Medical Terms</label>
+    <label><input type="checkbox" id="tok-financial" checked> Financial Data</label>
+    <label><input type="checkbox" id="tok-address" checked> Addresses</label>
+    <label><input type="checkbox" id="tok-phone" checked> Phone Numbers</label>
+    <label><input type="checkbox" id="tok-email" checked> Email Addresses</label>
+  </div>
+  <button class="btn-tokenize" onclick="tokenizeText()">Tokenize Text</button>
+  <button class="btn-restore" onclick="restoreText()">Restore Original</button>
+  <div class="token-result" id="tokenizer-output">
+    <button class="copy-btn" onclick="copyTokenized()">Copy Safe Version</button>
+  </div>
+</div>
+</div>
+
+<div class="method-panel" id="method-purview">
+<h4>Method 2: Microsoft Purview Sensitivity Labels</h4>
+<p>If your organization uses Microsoft 365, <strong>Microsoft Purview</strong> automatically classifies, labels, and protects sensitive content across all documents, emails, and files.</p>
+<ul>
+  <li><strong>Auto-detection:</strong> 300+ built-in Sensitive Information Types &mdash; SSNs, credit cards, medical records</li>
+  <li><strong>Sensitivity labels:</strong> Apply "Confidential," "Internal Only," or "Highly Sensitive" labels that travel with the file</li>
+  <li><strong>Encryption:</strong> Labeled documents are automatically encrypted</li>
+  <li><strong>DLP:</strong> Block sharing of sensitive data via email, Teams, or SharePoint</li>
+</ul>
+<h4>Setup Steps</h4>
+<ol style="padding-left:1.25rem;margin-bottom:0.75rem;">
+  <li style="margin-bottom:0.5rem;">Open <em>compliance.microsoft.com</em> with your admin account</li>
+  <li style="margin-bottom:0.5rem;">Go to <em>Information Protection</em> &rarr; <em>Labels</em> &rarr; Create label</li>
+  <li style="margin-bottom:0.5rem;">Set encryption, content marking, and auto-labeling rules</li>
+  <li style="margin-bottom:0.5rem;">Publish the label policy to make it available to users</li>
+  <li style="margin-bottom:0.5rem;">Enable auto-labeling (e.g., "if document contains SSN, apply 'Highly Sensitive'")</li>
+</ol>
+<div class="tip"><strong>Start Simple:</strong> Three labels: <em>Public</em>, <em>Internal</em>, and <em>Confidential</em>. Any "Confidential" document should never be pasted into a free AI tool.</div>
+</div>
+
+<div class="method-panel" id="method-word">
+<h4>Method 3: Word Document Inspector</h4>
+<p>Word's <strong>Document Inspector</strong> removes hidden metadata, personal information, and tracked changes before sharing.</p>
+<ol style="padding-left:1.25rem;margin-bottom:0.75rem;">
+  <li style="margin-bottom:0.5rem;"><strong>Save a copy first</strong> &mdash; Document Inspector permanently removes data</li>
+  <li style="margin-bottom:0.5rem;">Click <strong>File</strong> &rarr; <strong>Info</strong> &rarr; <strong>Check for Issues</strong> &rarr; <strong>Inspect Document</strong></li>
+  <li style="margin-bottom:0.5rem;">Check all boxes &rarr; Click <strong>Inspect</strong></li>
+  <li style="margin-bottom:0.5rem;">Click <strong>Remove All</strong> next to each category to strip</li>
+  <li style="margin-bottom:0.5rem;">Save the cleaned document with a new filename</li>
+</ol>
+<h4>Text Redaction via Find and Replace</h4>
+<ol style="padding-left:1.25rem;margin-bottom:0.75rem;">
+  <li style="margin-bottom:0.5rem;">Press <strong>Ctrl+H</strong></li>
+  <li style="margin-bottom:0.5rem;">"Find what": the sensitive text (e.g., client name)</li>
+  <li style="margin-bottom:0.5rem;">"Replace with": a placeholder (e.g., [CLIENT_1])</li>
+  <li style="margin-bottom:0.5rem;">Click <strong>Replace All</strong> &rarr; Run Document Inspector &rarr; Save as new file</li>
+</ol>
+</div>
+
+<div class="callout"><strong>Bottom Line:</strong> ${ctx === 'nonprofit' ? 'Use the tokenizer for quick AI tasks. Set up Purview for organization-wide protection. Run Document Inspector before sharing files.' : ctx === 'business' ? 'Tokenize client data before pasting into AI. Use Document Inspector before sharing documents. Explore Purview if you\'re on M365.' : 'Always tokenize personal information before pasting into free AI. Run Document Inspector on Word files before sharing.'}</div>
+`},
+
+// -------- 7. PROMPT GENERATOR --------
+generator: {
+  title: "Prompt Generator",
+  sub: "Build Your Own Perfect Prompt",
+  content: (ctx) => `
+<div class="generator" id="prompt-generator">
+  <h2>AI Prompt Generator</h2>
+  <p style="color:var(--mid);margin-bottom:0.5rem;">Fill in the fields below and get a ready-to-paste prompt using the 5-Part Formula.</p>
+  <div class="gen-row">
+    <div>
+      <label>1. Role &mdash; Who should AI be?</label>
+      <input type="text" id="gen-role" placeholder="e.g., grant writer for a community health nonprofit">
+    </div>
+    <div>
+      <label>2. Context &mdash; What's the background?</label>
+      <input type="text" id="gen-context" placeholder="e.g., We serve 15,000 residents in rural CT">
+    </div>
+  </div>
+  <label>3. Task &mdash; What should AI do?</label>
+  <textarea id="gen-task" placeholder="e.g., Write a 300-word program narrative for our CDC grant application. Include need statement, program design, and expected outcomes."></textarea>
+  <div class="gen-row">
+    <div>
+      <label>4. Format &mdash; How should it look?</label>
+      <input type="text" id="gen-format" placeholder="e.g., Short paragraphs, 2 data points, end with the ask">
+    </div>
+    <div>
+      <label>5. Constraints &mdash; What to avoid?</label>
+      <input type="text" id="gen-constraints" placeholder="e.g., No jargon, 8th-grade reading level, under 500 words">
+    </div>
+  </div>
+  <label>Tone (optional)</label>
+  <select id="gen-tone">
+    <option value="">Choose a tone...</option>
+    <option value="professional and confident">Professional and confident</option>
+    <option value="warm and personal">Warm and personal</option>
+    <option value="direct and action-oriented">Direct and action-oriented</option>
+    <option value="conversational and approachable">Conversational and approachable</option>
+    <option value="formal and authoritative">Formal and authoritative</option>
+    <option value="celebratory and inclusive">Celebratory and inclusive</option>
+  </select>
+  <button class="btn-generate" onclick="generatePrompt()">Generate My Prompt</button>
+  <div class="generated-output" id="gen-output">
+    <button class="copy-btn" onclick="copyGenerated()">Copy to Clipboard</button>
+  </div>
+</div>
+`}
+
+}; // end SECTIONS
+
+// =============================================
+// NAVIGATION MAP PER AUDIENCE
+// =============================================
+const NAV_MAP = {
+  nonprofit: [
+    { id: 'why', label: 'Why AI for Nonprofits' },
+    { id: 'communicate', label: 'How to Communicate with AI' },
+    { id: 'tools', label: 'Choosing an AI Tool' },
+    { id: 'prompts', label: 'Prompt Library' },
+    { id: 'skills', label: 'Building AI Skills' },
+    { id: 'protection', label: 'Tools & Data Protection' },
+    { id: 'generator', label: 'Prompt Generator' },
+  ],
+  business: [
+    { id: 'why', label: 'Why AI for Business' },
+    { id: 'communicate', label: 'How to Communicate with AI' },
+    { id: 'tools', label: 'Choosing an AI Tool' },
+    { id: 'prompts', label: 'Prompt Library' },
+    { id: 'skills', label: 'Building AI Skills' },
+    { id: 'protection', label: 'Tools & Data Protection' },
+    { id: 'generator', label: 'Prompt Generator' },
+  ],
+  personal: [
+    { id: 'why', label: 'Why AI for You' },
+    { id: 'communicate', label: 'How to Communicate with AI' },
+    { id: 'tools', label: 'Choosing an AI Tool' },
+    { id: 'prompts', label: 'Prompt Library' },
+    { id: 'skills', label: 'Building AI Skills' },
+    { id: 'protection', label: 'Tools & Data Protection' },
+    { id: 'generator', label: 'Prompt Generator' },
+  ]
+};
+
+const EDITION_LABELS = {
+  nonprofit: 'Nonprofit & Community Organization Edition',
+  business: 'Small Business Edition',
+  personal: 'Personal Productivity Edition'
+};
+
+// =============================================
+// APP LOGIC
+// =============================================
+let currentAudience = null;
+
+function selectAudience(type) {
+  currentAudience = type;
+  document.querySelectorAll('.chooser-card').forEach((c,i) => {
+    c.classList.toggle('selected', ['nonprofit','business','personal'][i] === type);
+  });
+  document.getElementById('edition-label').textContent = EDITION_LABELS[type];
+
+  // Update nav pills
+  document.querySelectorAll('.header-nav .nav-pill').forEach(b => b.classList.remove('active'));
+
+  const sidebar = document.getElementById('sidebar-nav');
+  sidebar.innerHTML = '<h4>Sections</h4>' + NAV_MAP[type].map(item =>
+    `<a href="#section-${item.id}" onclick="activateNav(this)">${item.label}</a>`
+  ).join('');
+
+  const area = document.getElementById('content-area');
+  area.innerHTML = NAV_MAP[type].map(item => {
+    const s = SECTIONS[item.id];
+    return `<div class="section" id="section-${item.id}">
+      <h2>${s.title}</h2>
+      ${s.sub ? `<div class="section-sub">${s.sub}</div>` : ''}
+      <hr class="divider">
+      ${s.content(type)}
+    </div>`;
+  }).join('');
+
+  document.getElementById('main-content').classList.add('visible');
+  document.getElementById('hero-section').style.display = 'none';
+  document.getElementById('chooser-section').style.display = 'none';
+  document.getElementById('nav-home').classList.remove('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(() => {
+    const first = sidebar.querySelector('a');
+    if (first) first.classList.add('active');
+  }, 100);
+}
+
+function goHome() {
+  currentAudience = null;
+  document.getElementById('main-content').classList.remove('visible');
+  document.getElementById('hero-section').style.display = '';
+  document.getElementById('chooser-section').style.display = '';
+  document.getElementById('nav-home').classList.add('active');
+  document.querySelectorAll('.chooser-card').forEach(c => c.classList.remove('selected'));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function activateNav(el) {
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function scrollToGenerator() {
+  if (!currentAudience) { selectAudience('nonprofit'); }
+  setTimeout(() => {
+    const gen = document.getElementById('section-generator');
+    if (gen) gen.scrollIntoView({ behavior: 'smooth' });
+    document.querySelectorAll('.sidebar a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#section-generator');
     });
-  });
-</script>
+  }, 200);
+}
 
+function scrollToTokenizer() {
+  if (!currentAudience) { selectAudience('nonprofit'); }
+  setTimeout(() => {
+    const tok = document.getElementById('tokenizer-anchor') || document.getElementById('section-protection');
+    if (tok) tok.scrollIntoView({ behavior: 'smooth' });
+    document.querySelectorAll('.sidebar a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#section-protection');
+    });
+  }, 200);
+}
+
+function scrollToPromptLib() {
+  if (!currentAudience) { selectAudience('nonprofit'); }
+  setTimeout(() => {
+    const lib = document.getElementById('section-prompts');
+    if (lib) lib.scrollIntoView({ behavior: 'smooth' });
+    document.querySelectorAll('.sidebar a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#section-prompts');
+    });
+  }, 200);
+}
+
+// --- ACCORDION ---
+function toggleAccordion(btn) {
+  const content = btn.nextElementSibling;
+  const isOpen = content.classList.contains('open');
+  btn.closest('.section').querySelectorAll('.accordion-content.open').forEach(c => {
+    c.classList.remove('open');
+    c.previousElementSibling.classList.remove('open');
+  });
+  if (!isOpen) {
+    content.classList.add('open');
+    btn.classList.add('open');
+  }
+}
+
+// --- COPY PROMPT ---
+function copyPrompt(block) {
+  const text = block.childNodes[0].textContent.trim();
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = block.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+// --- PROMPT GENERATOR ---
+function generatePrompt() {
+  const role = document.getElementById('gen-role').value.trim();
+  const context = document.getElementById('gen-context').value.trim();
+  const task = document.getElementById('gen-task').value.trim();
+  const format = document.getElementById('gen-format').value.trim();
+  const constraints = document.getElementById('gen-constraints').value.trim();
+  const tone = document.getElementById('gen-tone').value;
+  if (!task) { alert('Please fill in at least the Task field.'); return; }
+  let parts = [];
+  if (role) parts.push(`You are a ${role}.`);
+  if (context) parts.push(`\nContext: ${context}`);
+  parts.push(`\n${task}`);
+  if (format) parts.push(`\nFormat: ${format}.`);
+  if (tone) parts.push(`Tone: ${tone}.`);
+  if (constraints) parts.push(`\nConstraints: ${constraints}.`);
+  const output = document.getElementById('gen-output');
+  output.childNodes[0].textContent = parts.join('\n');
+  output.classList.add('visible');
+}
+
+function copyGenerated() {
+  const output = document.getElementById('gen-output');
+  const text = output.childNodes[0].textContent.trim();
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = output.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy to Clipboard'; }, 1500);
+  });
+}
+
+// --- METHOD TOGGLE ---
+function toggleMethod(method, btn) {
+  document.querySelectorAll('.method-toggle button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.method-panel').forEach(p => p.classList.remove('visible'));
+  const panel = document.getElementById('method-' + method);
+  if (panel) panel.classList.add('visible');
+}
+
+// --- TOKENIZER ENGINE ---
+let tokenMap = {};
+let originalText = '';
+
+function tokenizeText() {
+  const input = document.getElementById('tokenizer-input');
+  const text = input.value;
+  if (!text.trim()) { alert('Please paste some text to tokenize.'); return; }
+  originalText = text;
+  tokenMap = {};
+  let result = text;
+  let counters = { PERSON:0, DATE:0, SSN:0, CONDITION:0, AMOUNT:0, ADDRESS:0, PHONE:0, EMAIL:0, FACILITY:0, ID:0 };
+  function addToken(type, match) { counters[type]++; const t='['+type+'_'+counters[type]+']'; tokenMap[t]=match; return t; }
+
+  if (document.getElementById('tok-email').checked)
+    result = result.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, m => addToken('EMAIL',m));
+  if (document.getElementById('tok-ssn').checked) {
+    result = result.replace(/\b\d{3}[-.\s]?\d{2}[-.\s]?\d{4}\b/g, m => { if(/^\d{3}[-.\s]\d{2}[-.\s]\d{4}$/.test(m)||/^\d{9}$/.test(m)) return addToken('SSN',m); return m; });
+    result = result.replace(/\b[A-Z]{1,3}[-]?\d{5,10}\b/g, m => addToken('ID',m));
+  }
+  if (document.getElementById('tok-financial').checked) {
+    result = result.replace(/\$[\d,]+\.?\d{0,2}/g, m => addToken('AMOUNT',m));
+    result = result.replace(/\b\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}\b/g, m => addToken('ID',m));
+  }
+  if (document.getElementById('tok-phone').checked)
+    result = result.replace(/\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g, m => addToken('PHONE',m));
+  if (document.getElementById('tok-dates').checked) {
+    result = result.replace(/\b(?:0?[1-9]|1[0-2])[-\/]\d{1,2}[-\/]\d{2,4}\b/g, m => addToken('DATE',m));
+    result = result.replace(/\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}(?:,?\s*\d{4})?\b/gi, m => addToken('DATE',m));
+  }
+  if (document.getElementById('tok-address').checked)
+    result = result.replace(/\d{1,5}\s[A-Z][a-zA-Z]+(?:\s[A-Z][a-zA-Z]+)*(?:\s(?:Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Lane|Ln|Court|Ct|Boulevard|Blvd|Way|Circle|Cir|Place|Pl))(?:\.)?(?:,?\s*[A-Z][a-zA-Z]+(?:\s[A-Z][a-zA-Z]+)*)?(?:,?\s*[A-Z]{2}\s*\d{5}(?:-\d{4})?)?/g, m => addToken('ADDRESS',m));
+  if (document.getElementById('tok-medical').checked) {
+    result = result.replace(/\b(?:Type\s*[12]\s*diabetes|diabetes|hypertension|high blood pressure|depression|anxiety|COPD|asthma|cancer|HIV|AIDS|hepatitis|bipolar|schizophrenia|arthritis|Alzheimer'?s|dementia|heart\s*disease|kidney\s*disease|stroke|epilepsy|Parkinson'?s|multiple\s*sclerosis|fibromyalgia|lupus|Crohn'?s|celiac|anemia|obesity|PTSD|OCD|ADHD|autism|pregnancy|miscarriage|substance\s*abuse|addiction|overdose|suicidal|self-harm)/gi, m => addToken('CONDITION',m));
+    result = result.replace(/\b[A-Z][a-zA-Z]+(?:\s[A-Z][a-zA-Z]+)*\s(?:Hospital|Medical Center|Clinic|Health Center|Nursing Home|Rehab|Laboratory|Pharmacy|Practice)\b/g, m => addToken('FACILITY',m));
+  }
+  if (document.getElementById('tok-names').checked)
+    result = result.replace(/\b(?:Mr\.?|Mrs\.?|Ms\.?|Dr\.?|Prof\.?)?\s?([A-Z][a-z]{1,15})\s([A-Z][a-z]{1,15})\b/g, (m,f,l) => {
+      if(['The','This','That','From','With','What','When','Where','Each','Your','Their','Type','Step','Rule','Best','Data','Free','More','Find','Replace','Click','Safe','Copy'].includes(f)) return m;
+      return addToken('PERSON',m);
+    });
+
+  const output = document.getElementById('tokenizer-output');
+  let highlighted = result.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  highlighted = highlighted.replace(/\[(PERSON|DATE|SSN|CONDITION|AMOUNT|ADDRESS|PHONE|EMAIL|FACILITY|ID)_\d+\]/g, '<span class="token-highlight">$&</span>');
+  output.innerHTML = highlighted + '<button class="copy-btn" onclick="copyTokenized()">Copy Safe Version</button>';
+  output.classList.add('visible');
+}
+
+function restoreText() {
+  if (!originalText) return;
+  document.getElementById('tokenizer-input').value = originalText;
+  document.getElementById('tokenizer-output').classList.remove('visible');
+  tokenMap = {};
+}
+
+function copyTokenized() {
+  const output = document.getElementById('tokenizer-output');
+  const text = output.innerText.replace('Copy Safe Version','').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = output.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    btn.style.background = 'var(--green)';
+    setTimeout(() => { btn.textContent = 'Copy Safe Version'; btn.style.background = ''; }, 1500);
+  });
+}
+
+// --- INTERSECTION OBSERVER ---
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        document.querySelectorAll('.sidebar a').forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+  const area = document.getElementById('content-area');
+  const mo = new MutationObserver(() => {
+    area.querySelectorAll('.section').forEach(s => observer.observe(s));
+  });
+  mo.observe(area, { childList: true });
+});
+</script>
 </body>
 </html>
